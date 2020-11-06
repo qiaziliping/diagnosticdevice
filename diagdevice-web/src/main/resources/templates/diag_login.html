@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN"
+	  xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" th:href="@{/images/login/favicon.ico}"/>
+    <title>基于区块链诊断设备管理系统</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+    <link rel="stylesheet" th:href="@{/css/public/font-awesome.min.css}" />  <!-- 图标CSS文件 -->
+    <link rel="stylesheet" th:href="@{/css/public/login.css}" />
+</head>
+<body>
+<div class="detail" id="wrapper">
+    <div class="detail-wrapper clearfix">
+        <div class="detail-main">
+            <div class="login-header clearfix">基于区块链诊断设备管理平台</div>
+            <div class="login-container">
+                <div class="login layui-clear">
+                    <div class="login-qr-code">
+                        <img class="code-img" th:src="@{/images/login/qr_code.jpg}" />
+                        <p class="code-intro">下载实时分账应用，查看收益更便捷</p>
+                        <p class="code-intro">安卓手机扫描二维码下载</p>
+                        <p class="code-intro">IOS手机请搜索应用实时分账下载安装</p>
+                    </div>
+                    <div class="login-form">
+                        <h4 class="h4">欢迎登陆</h4>
+                        <div class="input-group">
+                            <label class="icon-user input-group-addon" for="username"></label>
+                            <input class="text" id="username" name="username" placeholder="请输入用户名" tabindex="1" autocomplete="off" type="text" value="" />
+                        </div>
+                        <div class="input-group">
+                            <label class="icon-key input-group-addon" for="password"></label>
+                            <input class="text" id="password" name="password" placeholder="请输入密码" tabindex="2" autocomplete="off" type="password" value="" />
+                        </div>
+                        <div class="row">
+                            <button class="layui-btn layui-btn-normal layui-btn-fluid" id="loginBtn">登 录</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  <!-- class="login-container" -->
+        </div>  <!-- class="detail-main" -->
+    </div>  <!-- class="detail-wrapper clearfix" -->
+    <div class="login-footer">Copyright © 2018 深圳市元征软件开发有限公司 | <a href="//www.miitbeian.gov.cn/" target="_blank">粤ICP备06128098号</a></div>
+</div>
+<!-- <script src="library/require/require.js" defer async="true" data-main="js/login/main"></script> -->
+<script type="text/javascript" th:src="@{/js/require/require.js}" defer async="true" data-main="/js/login/main"></script>
+</body>
+</html>

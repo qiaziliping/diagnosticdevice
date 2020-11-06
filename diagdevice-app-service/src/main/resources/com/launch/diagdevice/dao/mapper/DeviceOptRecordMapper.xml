@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.DeviceOptRecordMapper">
+
+	<resultMap id="baseResultMap" type="DeviceOptRecord">
+		<result property="id" column="id" />
+		<result property="deviceId" column="device_id" />
+		<result property="recordDate" column="record_date" />
+		<result property="recordName" column="record_name" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+	
+	<sql id="baseNotIdColumns">
+		device_id,record_date,record_name,remark,status,create_user_id,create_time
+	</sql>
+	<sql id="baseColumns">
+		id,device_id,record_date,record_name,remark,status,create_user_id,create_time
+	</sql>
+
+	<sql id="updateColumns">
+		<set>
+			<if test="deviceId != null">
+				device_id = #{deviceId},
+			</if>
+			<if test="recordName != null">
+				record_name = #{recordName},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="createUserId != null">
+				create_user_id = #{createUserId},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime}
+			</if>
+		</set>
+	</sql>
+	
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="recordName != null">
+				AND ${columnPrefix}record_name = #{recordName}
+			</if>
+			<if test="status != null">
+				AND ${columnPrefix}status = #{status}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="selectByIndex" statementType="PREPARED" resultMap="baseResultMap">
+		SELECT <include refid="baseColumns" /> FROM device_opt_record
+		<include refid="whereClause">
+			<property name="columnPrefix" value="" />
+		</include>
+		ORDER BY ${orderBy} ${orderByType}
+	</select>
+
+	<insert id="save" parameterType="deviceOptRecord">
+		INSERT INTO device_opt_record (
+		<include refid="baseNotIdColumns" />
+		) VALUES (
+		#{deviceId},
+		#{recordDate},
+		#{recordName},
+		#{remark},
+		#{status},
+		#{createUserId},
+		#{createTime}
+		)
+	</insert>
+
+</mapper>
+

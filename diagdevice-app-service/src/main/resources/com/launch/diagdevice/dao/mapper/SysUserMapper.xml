@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.SysUserMapper">
+
+	<resultMap id="baseResultMap" type="SysUser">
+		<result property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="nickname" column="nickname" />
+		<result property="sex" column="sex" />
+		<result property="isActive" column="is_active" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="sort" column="sort" />
+		<result property="lastLoginTime" column="last_login_time" />
+		<result property="imagePathUrl" column="image_path_url" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="createTime" column="create_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+	
+	<resultMap id="voBaseResultMap" type="SysUserVo">
+		<result property="id" column="id" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="nickname" column="nickname" />
+		<result property="sex" column="sex" />
+		<result property="isActive" column="is_active" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="sort" column="sort" />
+		<result property="lastLoginTime" column="last_login_time" />
+		<result property="imagePathUrl" column="image_path_url" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="createTime" column="create_time" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="updateTime" column="update_time" />
+		<collection property="urVolist" ofType="SysUserRoleVo" select="selectURVoByUserId" column="id" />
+		
+	</resultMap>
+	<sql id="baseNotIdColumns">
+		username,password,nickname,sex,is_active,mobile,email,sort,last_login_time,image_path_url,
+		remark,status,create_user_id,create_time,update_user_id,update_time
+	</sql>
+	<sql id="baseColumns">
+		id,username,password,nickname,sex,is_active,mobile,email,sort,last_login_time,image_path_url,
+		remark,status,create_user_id,create_time,update_user_id,update_time
+	</sql>
+
+	<sql id="updateColumns">
+		<set>
+			<if test="username != null">
+				username = #{username},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="nickname != null">
+				nickname = #{nickname},
+			</if>
+			<if test="isActive != null">
+				is_active = #{isActive},
+			</if>
+			<if test="mobile != null">
+				mobile = #{mobile},
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time = #{lastLoginTime},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="createUserId != null">
+				create_user_id = #{createUserId},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime},
+			</if>
+		</set>
+	</sql>
+	
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="username != null and username !=''">
+				AND ${columnPrefix}username like concat('%',#{username},'%')
+			</if>
+			<if test="email != null and email !=''">
+				AND ${columnPrefix}email = #{email}
+			</if>
+			<if test="mobile != null and mobile !=''">
+				AND ${columnPrefix}mobile = #{mobile}
+			</if>
+			<if test="status != null">
+				AND ${columnPrefix}status = #{status}
+			</if>
+			<if test="isActive != null">
+				AND ${columnPrefix}is_active = #{isActive}
+			</if>
+			<if test="sex != null">
+				AND ${columnPrefix}sex = #{sex}
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="oneWhereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="username != null and username !=''">
+				AND ${columnPrefix}username = #{username}
+			</if>
+			<if test="email != null and email !=''">
+				AND ${columnPrefix}email = #{email}
+			</if>
+			<if test="mobile != null and mobile !=''">
+				AND ${columnPrefix}mobile = #{mobile}
+			</if>
+			<if test="status != null">
+				AND ${columnPrefix}status = #{status}
+			</if>
+			<if test="isActive != null">
+				AND ${columnPrefix}is_active = #{isActive}
+			</if>
+			<if test="sex != null">
+				AND ${columnPrefix}sex = #{sex}
+			</if>
+		</trim>
+	</sql>
+	
+	<update id="update" parameterType="SysUser">
+		UPDATE sys_user 
+		<include refid="updateColumns" />
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="SysUser">
+		DELETE FROM  sys_user 
+		WHERE id = #{id}
+	</delete>
+
+	<select id="selectById" parameterType="Long"
+		resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM sys_user
+		WHERE id = #{id}
+	</select>
+	
+	<select id="selectVoByIndex" parameterType="SysUser" resultMap="voBaseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM sys_user
+		<include refid="whereClause"> 
+			<property name="columnPrefix" value="" />
+		</include> 
+		ORDER BY id DESC
+	</select>
+	
+	<select id="selectURVoByUserId" parameterType="Long" resultType="SysUserRoleVo">
+		SELECT 
+			A.role_id AS roleId,
+			A.user_id AS userId,
+			B.role_name AS roleName,
+			B.role_code AS roleCode
+		FROM sys_user_role A,sys_role B
+		WHERE A.role_id = B.id
+		AND A.user_id = #{id}
+	</select>
+	
+	<select id="selectOne" parameterType="SysUser"
+		resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM sys_user
+		<include refid="oneWhereClause"> 
+			<property name="columnPrefix" value="" />
+		</include> 
+	</select>
+	
+<!-- 	<select id="selectVoByCondition" statementType="PREPARED" resultMap="voBaseResultMap"> -->
+<!-- 		SELECT -->
+<!-- 			A.id,A.serial_no,A.device_type,A.device_group_id,A.location,A.owner,A.voucher, -->
+<!-- 			A.remark,A.status,A.create_user_id,A.create_time,A.update_user_id,A.update_time, -->
+<!-- 			B.group_name AS device_group_name -->
+<!-- 		FROM device A,device_group B -->
+<!-- 		<include refid="whereClause"> -->
+<!-- 			<property name="columnPrefix" value="A." /> -->
+<!-- 		</include> -->
+<!-- 		AND A.device_group_id = B.id -->
+<!-- 		ORDER BY ${orderBy} ${orderByType} -->
+<!-- 	</select> -->
+
+	<insert id="save" parameterType="SysUser" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO sys_user (
+		<include refid="baseNotIdColumns" />
+		) VALUES (
+		#{username},
+		#{password},
+		#{nickname},
+		#{sex},
+		#{isActive},
+		#{mobile},
+		#{email},
+		#{sort},
+		#{lastLoginTime},
+		#{imagePathUrl},
+		#{remark},
+		#{status},
+		#{createUserId},
+		#{createTime},
+		#{updateUserId},
+		#{updateTime}
+		)
+	</insert>
+	
+</mapper>
+

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.UserMapper">
+
+	<!-- <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+		"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd"> -->
+
+	<!-- <resultMap id="baseResult" type="com.launch.diagdevice.model.User"> 
+		<result property="id" column="id" /> <result property="username" column="username" 
+		/> <result property="password" column="password" /> </resultMap> -->
+
+	<sql id="baseNotIdColumns">
+		username,password,nick_name,sex,email,mobile,image_path_url,source,open_id,union_id,status,remark
+	</sql>
+	<sql id="baseColumns">
+		id,username,password,nick_name,sex,email,mobile,image_path_url,source,open_id,union_id,status,remark
+	</sql>
+
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="username != null">
+				AND ${columnPrefix}username = #{username}
+			</if>
+			<if test="nickName != null">
+				AND ${columnPrefix}nick_name = #{nickName}
+			</if>
+			<if test="email != null">
+				AND ${columnPrefix}email = #{email}
+			</if>
+			<if test="mobile != null">
+				AND ${columnPrefix}mobile = #{mobile}
+			</if>
+			<if test="source != null">
+				AND ${columnPrefix}source = #{source}
+			</if>
+		</trim>
+	</sql>
+
+
+	<select id="selectOne" statementType="PREPARED"
+		resultType="User">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user
+		<include refid="whereClause">
+			<property name="columnPrefix" value="" />
+		</include>
+	</select>
+
+	<select id="selectById" parameterType="Long"
+		resultType="User">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user
+		WHERE id = #{id}
+	</select>
+
+	<!-- 根据唯一标识查询数据，unique 为用户名，邮箱，手机号 -->
+	<select id="selectByUniqueFlag" parameterType="String"
+		resultType="User">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user
+		WHERE username = #{unique}
+		OR email = #{unique}
+		OR mobile =
+		#{unique}
+	</select>
+
+
+
+	<insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		insert into user (
+		<include refid="baseNotIdColumns" />
+		) values
+		(
+		#{username},
+		#{password},
+		#{nickName},
+		#{sex},
+		#{email},
+		#{mobile},
+		#{imagePathUrl},
+		#{source},
+		#{openId},
+		#{unionId},
+		#{status},
+		#{remark}
+		)
+	</insert>
+	
+	<!-- 	后台管理查询用户和用户扩展列表 -->
+	<select id="selectUserAndExtVoByIndex" statementType="PREPARED" resultType="UserAndExtVo"> 
+		SELECT 
+		    A.id AS id,
+		    A.username AS username,
+		    A.email AS email,
+		    A.mobile AS mobile,
+		    B.create_time AS createTime,
+		    B.last_time AS lastTime
+		FROM user A left join user_ext B
+		ON A.id = B.user_id
+		<trim prefix="WHERE" prefixOverrides="OR|AND">
+			<if test="username != null">
+				AND username LIKE CONCAT('%',#{username},'%')
+			</if>
+		</trim>
+		ORDER BY ${orderBy} ${orderByType}
+	</select>
+
+</mapper>
+

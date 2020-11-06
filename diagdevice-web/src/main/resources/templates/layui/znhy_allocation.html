@@ -1,0 +1,208 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<link rel="shortcut icon" th:href="@{/images/login/favicon.ico}" />
+<title th:replace="~{layui/public/common :: layui_title}">资产分账管理</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+<link rel="stylesheet" th:href="@{/css/public/common.css}" />      <!-- 公共CSS文件 -->
+<link rel="stylesheet" th:href="@{/css/public/font-awesome.min.css}" />  <!-- 图标CSS文件 -->
+<style type="text/css">
+	.dialog .main-text .layui-form-label { width:95px;padding-left: 0; }
+	
+</style>
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+	<div th:replace="layui/public/common :: layout_header"></div>   
+	<div th:replace="layui/public/common :: layout_menu"></div>   
+	<div class="layui-body" >
+		<div style="padding: 15px;height: 90%;">
+		<!--  ....公共部分.....  -->	
+
+	<div class="layui-fluid">
+		<div class="layui-card layui-clear" style="margin-bottom: 0;"
+			id="contentTopDiv">
+			<div class="pull-left">
+				<!-- 	搜索 -->
+				<form class="layui-form" action="">
+					<div class="layui-form-item" style="margin-bottom: 0;">
+						<div class="layui-inline">
+							<input class="layui-input" name="name" id="searchName" placeholder="请输入设备序列号" autocomplete="off" />
+						</div>
+						
+						<div class="layui-inline">
+		                    <div class="layui-inline">
+		                    	<select id="ruleSelect" name="jobGroupId">
+		                    		<option value="">请选择分账规则</option>
+		                    	</select>
+		                    </div>
+		                </div>
+
+						<div class="layui-inline">
+							<a class="layui-btn layui-btn-danger " lay-submit
+								lay-filter="formDemo" id="searchBtn">搜索</a>
+						</div>
+					</div>
+				</form>
+			</div>
+			<span sec:authorize="hasAuthority('ZNHY_MGR_ALLOCATION_ADD')">
+			<div class="pull-right">
+		        <a class="layui-btn layui-btn-danger" id="addAllocationBtn">添加</a>
+		    </div>
+			</span>
+		</div>
+	</div>
+	<table class="layui-hide" id="allocationList" lay-filter="test"></table>
+<!--  ....公共部分.....  -->			
+        </div>
+	</div>
+	<div th:replace="layui/public/common :: layout_footer"></div>   
+</div>	
+<!-- 	添加 弹出框 class="dialog" 默认隐藏-->
+<div class="dialog" id="addProfitDialog">
+    <h5 class="h5">
+        <div class="title"><span class="rectangle"></span>添加资产分配</div>
+        <i class="icon-remove icon-2x close-btn closeBtn"></i>
+    </h5>
+    <form class="layui-form">
+        <div class="main-text mainText"></div>
+        <div class="btn-group">
+            <button class="layui-btn layui-btn-danger" lay-submit lay-filter="addProfit">保存</button>
+            <a class="layui-btn layui-btn-primary closeBtn">返回</a>
+        </div>
+    </form>
+</div>
+<!-- 	编辑弹出框 class="dialog" 默认隐藏-->
+<div class="dialog" id="editProfitDialog">
+    <h5 class="h5">
+        <div class="title"><span class="rectangle"></span>编辑资产分配</div>
+        <i class="icon-remove icon-2x close-btn closeBtn"></i>
+    </h5>
+    <form class="layui-form">
+        <div class="main-text mainText"></div>
+        <div class="btn-group">
+            <button class="layui-btn layui-btn-danger" lay-submit lay-filter="editProfit">保存</button>
+            <a class="layui-btn layui-btn-primary closeBtn">返回</a>
+        </div>
+    </form>
+</div>
+<!-- 	详情弹出框 class="dialog" 默认隐藏-->
+<div class="dialog" id="detailProfitDialog">
+    <h5 class="h5">
+        <div class="title"><span class="rectangle"></span>资产分配详情</div>
+        <i class="icon-remove icon-2x close-btn closeBtn"></i>
+    </h5>
+    <form class="layui-form">
+        <div class="main-text mainText"></div>
+        <div class="btn-group">
+            <a class="layui-btn layui-btn-primary closeBtn">返回</a>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/lodash/lodash.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<script type="text/javascript" th:src="@{/js/module/znhy_allocation.js}"></script>
+<script type="text/html" id="zizeng">
+    {{d.LAY_TABLE_INDEX+1}}
+</script>
+
+<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="discard">废弃</a> -->
+<script type="text/html" id="barDemo">
+<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
+<span sec:authorize="hasAuthority('ZNHY_MGR_ALLOCATION_UPDATE')">
+	<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</span>
+</script>
+<script type="text/html" id="ruleSelectTemplate">
+    {{!
+    <option value="">请选择分账规则</option>
+    !}}
+    {{# for (var i=0, dLen = d.length; i < dLen; i++) { }}
+    <option value="{{ d[i].jobGroupId }}">{{ d[i].groupName }}</option>
+    {{# } }}
+</script>
+<script type="text/html" id="addProfitTemplate">
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="ruleA"><i class="icon-star not-empty"></i> 分账规则</label>
+        <div class="layui-input-block">
+            <select id="ruleA" name="rule" lay-verify="required" lay-search="" lay-filter="ruleAFilter">
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="creatorIdA"><i class="icon-star not-empty"></i> 拥 有 者</label>
+        <div class="layui-input-block">
+            <select id="creatorIdA" name="creatorId" lay-verify="required">
+				<option value="">请选择拥有者</option>
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-bottom: 0">
+        <label class="layui-form-label" for="serialA"><i class="icon-star not-empty"></i> 设备序列号</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="serialA" name="serial" lay-verify="required|serialNo" placeholder="" autocomplete="off" />
+        </div>
+    </div>
+</script>
+<script type="text/html" id="editProfitTemplate">
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="ruleE"><i class="icon-star not-empty"></i> 分账规则</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="id" value="{{d.id}}"/>
+            <select id="ruleE" name="rule" lay-verify="required" lay-search="" lay-filter="ruleEFilter"></select>
+        </div>
+    </div>
+	<div class="layui-form-item">
+        <label class="layui-form-label" for="creatorIdE"><i class="icon-star not-empty"></i> 拥 有 者</label>
+        <div class="layui-input-block">
+            <select id="creatorIdE" name="creatorId" lay-verify="required">
+				<option value="">请选择拥有者</option>
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-bottom: 0">
+        <label class="layui-form-label" for="serialE"><i class="icon-star not-empty"></i>设备序列号</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="serialE" name="serial" value="{{d.name}}" 
+                   lay-verify="required|serialNo" placeholder="" autocomplete="off" />
+        </div>
+    </div>
+</script>
+<script type="text/html" id="detailProfitTemplate">
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="ruleD"><i class="icon-star not-empty"></i> 分账规则</label>
+        <div class="layui-input-block">
+            <select id="ruleD" name="rule" lay-verify="required" disabled></select>
+        </div>
+    </div>
+	<div class="layui-form-item">
+        <label class="layui-form-label" for="creatorIdD"><i class="icon-star not-empty"></i> 拥 有 者</label>
+        <div class="layui-input-block">
+            <select id="creatorIdD" name="creatorId" lay-verify="required" disabled>
+				<option value="">请选择拥有者</option>
+			</select>
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-bottom: 0">
+        <label class="layui-form-label" for="serialD">设备序列号</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="serialD" name="serial" value="{{d.name}}" disabled style="border-width: 0"
+                   lay-verify="required|serialNo" placeholder="" autocomplete="off" />
+        </div>
+    </div>
+</script>
+
+
+
+</body>
+</html>

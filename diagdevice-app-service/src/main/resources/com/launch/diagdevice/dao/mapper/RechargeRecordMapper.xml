@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.RechargeRecordMapper">
+
+	<resultMap id="baseResultMap" type="RechargeRecord">
+		<result property="id" column="id" />
+		<result property="orderNo" column="order_no" />
+		<result property="userId" column="user_id" />
+		<result property="diagMoney" column="diag_money" />
+		<result property="discountsMoney" column="discounts_money" />
+		<result property="realTotalMoney" column="real_total_money" />
+		<result property="payType" column="pay_type" />
+		<result property="payFrom" column="pay_from" />
+		<result property="isPay" column="is_pay" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<sql id="baseNotIdColumns">
+		order_no,user_id,diag_money,discounts_money,real_total_money,pay_type,pay_from,is_pay,remark,status,create_time,update_time
+	</sql>
+	<sql id="baseColumns">
+		id,order_no,user_id,diag_money,discounts_money,real_total_money,pay_type,pay_from,is_pay,remark,status,create_time,update_time
+	</sql>
+
+
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="orderNo != null">
+				AND ${columnPrefix}order_no = #{orderNo}
+			</if>
+			<if test="userId != null">
+				AND ${columnPrefix}user_id = #{userId}
+			</if>
+			<if test="realTotalMoney != null">
+				AND ${columnPrefix}real_total_money = #{realTotalMoney}
+			</if>
+			<if test="payType != null">
+				AND ${columnPrefix}pay_type = #{payType}
+			</if>
+			<if test="payFrom != null">
+				AND ${columnPrefix}pay_from = #{payFrom}
+			</if>
+			<if test="isPay != null">
+				AND ${columnPrefix}is_pay = #{isPay}
+			</if>
+			<if test="status != null">
+				AND ${columnPrefix}status = #{status}
+			</if>
+		</trim>
+	</sql>
+
+	<update id="batchUpdateStatus" parameterType="map">
+
+		UPDATE user_recharge_record SET status = 1
+		WHERE user_id = #{userId}
+		AND id IN
+		<foreach collection="listIds" item="sid" open="(" separator=","
+			close=")">
+			#{sid}
+		</foreach>
+	</update>
+	
+	<update id="updateByOrderNo" parameterType="map">
+
+		UPDATE user_recharge_record SET is_pay = #{isPay}
+		WHERE order_no = #{orderNo}
+	</update>
+
+	<select id="selectByIndex" statementType="PREPARED" resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user_recharge_record
+		<include refid="whereClause">
+			<property name="columnPrefix" value="" />
+		</include>
+		ORDER BY ${orderBy} ${orderByType}
+	</select>
+	
+	<select id="selectVoByRequest" statementType="PREPARED" resultType="RechargeRecordVo">
+		SELECT 
+			A.id AS id,
+			B.username AS username,
+			A.order_no AS orderNo,
+			A.user_id AS userId,
+			A.real_total_money AS realTotalMoney,
+			A.pay_type AS payType,
+			A.pay_from AS payFrom,
+			A.is_pay AS isPay,
+			A.status AS status,
+			A.create_time AS createTime
+		FROM user_recharge_record A LEFT JOIN user B
+		ON A.user_id = B.id
+		<trim prefix="WHERE" prefixOverrides="OR|AND">
+			<if test="username != null">
+				AND username LIKE CONCAT('%',#{username},'%')
+			</if>
+			<if test="orderNo != null">
+				AND order_no = #{orderNo}
+			</if>
+		</trim>
+		ORDER BY ${sortBy} ${sortType}
+	</select>
+	
+	<select id="selectOne" resultType="RechargeRecord" resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user_recharge_record
+		<include refid="whereClause">
+			<property name="columnPrefix" value="" />
+		</include>
+	</select>
+
+	<select id="selectById" statementType="PREPARED" resultMap="baseResultMap"> 
+		SELECT <include refid="baseColumns" />
+		FROM user_recharge_record 
+		WHERE id = #{id}
+		
+	</select>
+
+	<insert id="save" parameterType="RechargeRecord" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO user_recharge_record (
+		<include refid="baseNotIdColumns" />
+		) VALUES
+		( 
+			#{orderNo},
+			#{userId}, 
+			#{diagMoney}, 
+			#{discountsMoney}, 
+			#{realTotalMoney}, 
+			#{payType},
+			#{payFrom}, 
+			#{isPay},
+			#{remark}, 
+			#{status}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+
+
+</mapper>
+

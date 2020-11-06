@@ -1,0 +1,289 @@
+@charset "UTF-8";
+body { overflow: hidden; }
+/*****************************************************************
+                             自定义UI
+*****************************************************************/
+.no-arrow .layui-nav-more { display: none; }
+.layui-layout-admin .layui-header {
+    background-color: #fff;
+    -webkit-box-shadow: 0 4px 8px 0 rgba(7,17,27,.1);
+            box-shadow: 0 4px 8px 0 rgba(7,17,27,.1)
+}
+.layui-layout-admin .layui-logo {
+    width: 300px;
+    height: 100%;
+    line-height: 60px;
+    text-align: center;
+    color: #009688;
+    font-size: 16px;
+}
+
+.layui-header .layui-logo .inner-logo {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 60px;
+    font-size: 20px;
+    color: #f01414;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+.layui-header .layui-nav .layui-nav-item a { color: #393D49; }
+.layui-header .layui-nav .layui-nav-item a:hover { color: #2B333B; }
+.layui-header .layui-nav .layui-nav-item a.hover-red { color: #393D49; }
+.layui-header .layui-nav .layui-nav-item a.hover-red:hover { color: #f01414; }
+tr.error-tr td { border-color: #fff; }
+tr.error-tr:hover { background-color: transparent !important; }
+/*****************************************************************
+                               原UI修改
+*****************************************************************/
+/** 鼠标放上去的下划线 **/
+.layui-nav .layui-this:after, .layui-nav-bar, .layui-nav-tree .layui-nav-itemed:after {
+    background-color: #ccc\9;
+    background-color: rgba(255, 255, 255, .7);
+}
+/** 头部下拉菜单 **/
+.layui-nav .layui-nav-child dd.layui-this a, .layui-nav-child dd.layui-this {
+    background-color: #F2F2F2;
+    color: #f01414;
+}
+/** 左侧导航菜鼠标放上去背景 **/
+.layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover {
+    background-color: #ccc\9;
+    background-color: rgba(255, 255, 255, .6);
+    color: #000;
+}
+/** 左侧导航菜鼠标放上去左变滑块**/
+.layui-nav-tree .layui-nav-bar {
+    background-color: #ccc\9;
+    background-color: rgba(255, 255, 255, .2);
+}
+.layui-text a:not(.layui-btn):hover { text-decoration: none; }
+/** 面包屑导航鼠标放上去 **/
+.layui-breadcrumb a:hover { color: #f01414 !important; }
+/** 按钮修改 **/
+.layui-btn-danger { background-color: #f01414; }
+.layui-btn-group .layui-btn-primary:hover { color: #f01414; }
+.layui-btn-primary { border: 1px solid #C9C9C9; }
+.layui-btn-primary:hover {
+    border-color: #f01414;
+    color: #f01414;
+}
+.layui-btn-primary[disabled]:hover, .layui-btn-primary.disabled:hover {
+    border-color: #b2b2b2;
+    color: #b2b2b2;
+}
+/** 表格居中 **/
+.layui-table td, .layui-table th { text-align: center; }
+/** 表格内的按钮组设定为没有边框 **/
+td .layui-btn-group .layui-btn-primary:first-child { border-left: 0px solid #c9c9c9; }
+td .layui-btn-primary { color: #036; border: 0px solid #C9C9C9; }
+td .layui-btn-primary.gray-color { color: #b2b2b2; cursor: auto; }
+td .layui-btn-primary.gray-color:hover { color: #b2b2b2; }
+/** 设定分页 **/
+.layui-layout-admin .layui-body { bottom: 60px; }
+.layui-layout-admin .layui-footer {
+    height: 60px;
+    line-height: 60px;
+}
+.layui-laypage { margin: 0; }
+.layui-laypage a:hover { color: #f01414; }
+/** 日期控件时间选择器里禁用的隐藏 **/
+.laydate-time-list .laydate-disabled { display: none; }
+/** edit控件背景色修改，原背景白色不清晰 **/
+.layui-layedit-iframe { background-color: #faebcc; }
+/** 左侧导航二级菜单和一级菜单对齐 **/
+.layui-nav .layui-nav-item .layui-nav-child a { padding: 0 0 0 48px; }
+.layui-btn .layui-icon { font-size: initial; }
+/** 导航左侧的竖线 **/
+.layui-elem-quote {
+    border-left: 5px solid #fcc;
+    background-color: #FBF2F2;
+}
+.layui-breadcrumb a {
+    color: #f66 !important;
+    -webkit-transition: color .3s;
+    transition: color .3s;
+}
+/*****************************************************************
+                            自动完成
+*****************************************************************/
+.autocomplete-suggestions { margin-top: 6px; padding: 6px 0; background: #FFF; border: 1px solid #d2d2d2; border-radius: 6px; cursor: default; overflow: auto; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+.autocomplete-suggestion { padding: 4px 10px; white-space: nowrap; overflow: hidden; font-size: 12px; letter-spacing: 1px; }
+.autocomplete-suggestion span { float: right; color: #aaa; }
+.autocomplete-no-suggestion { padding: 2px 5px;}
+.autocomplete-selected { background: #ffc; }
+.autocomplete-suggestions strong { font-weight: bold; color: #f01414; }
+.autocomplete-group { padding: 2px 5px; font-weight: bold; font-size: 16px; color: #000; display: block; border-bottom: 1px solid #000; }
+/*****************************************************************
+                            工具样式
+*****************************************************************/
+.pull-right { float: right !important; }
+.pull-left { float: left !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+.text-center { text-align: center !important; }
+.text-ellipsis { white-space: nowrap; text-overflow: ellipsis; -o-text-overflow: ellipsis; overflow: hidden; }
+.not-empty {
+    display: inline-block;
+    vertical-align: 1px;
+    font-size: 12px;
+    font-size: 10px\9;
+    color: #f01414;
+    -webkit-transform: scale(.8);
+    transform: scale(.8);
+}
+.font-weight { font-weight: bold; }
+.color-black { color: #222; }
+.color-black-light { color: #666; }
+.margin-right16 { margin-right: 16px; }
+
+/*****************************************************************
+                            公共样式
+*****************************************************************/
+/** loading **/
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -21px;
+    margin-top: -21px;
+}
+.circular {
+    width: 42px;
+    height: 42px;
+    -webkit-animation: loading-rotate 2s linear infinite;
+    animation: loading-rotate 2s linear infinite
+}
+
+.path {
+    -webkit-animation: loading-dash 1.5s ease-in-out infinite;
+    animation: loading-dash 1.5s ease-in-out infinite;
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: 0;
+    stroke-width: 2;
+    stroke: #409EFF;
+    stroke-linecap: round
+}
+@-webkit-keyframes loading-rotate {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes loading-rotate {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+@-webkit-keyframes loading-dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -40px
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -120px
+    }
+}
+
+@keyframes loading-dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -40px
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -120px
+    }
+}
+.error-msg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: block;
+    margin-top: -25px;
+    margin-left: -200px;
+    padding: 0 8px;
+    width: 400px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    color: #8a6d3b;
+    text-align: center;
+    background-color: #fcf8e3;
+    border: 1px solid #faebcc;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.error-msg .fa { margin-right: 2px; }
+
+/** 对话框 **/
+.dialog {
+    position: relative;
+    display: none;
+    width: 600px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+.dialog .h5 {
+    position: relative;
+    font-size: 18px;
+    color: #222;
+    border-bottom: 1px solid #ccc;
+}
+.dialog .h5 .title { padding: 16px 40px;}
+.dialog .h5 .title .rectangle {
+    display: inline-block;
+    margin-left: -16px;
+    margin-right: 10px;
+    vertical-align: -5px;
+    width: 4px;
+    height: 24px;
+    background-color: #f01414;
+}
+.dialog .h5 .close-btn {
+    position: absolute;
+    top: 6px;
+    right: 32px;
+    padding: 8px;
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+    z-index: 1;
+}
+.dialog .h5 .close-btn:hover { color: #b2b2b2; }
+.dialog .main-text {
+    padding: 24px 40px;
+    font-size: 14px;
+    height: 200px;
+    overflow-y: auto;
+}
+.dialog .main-text .layui-form-label { padding-left: 0; }
+.dialog .btn-group {
+    padding: 24px 40px;
+    text-align: right;
+    border-top: 1px solid #ccc;
+}
+/** layer 对话框皮肤 **/
+.layer-red .layui-layer-btn .layui-layer-btn0 {
+    color: #fff;
+    background-color: #f01414;
+    border-color: #f01414;
+}

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>index 页面</title>
+</head>
+<body>
+ 	<form method="post" th:action="@{/paypal/pay}">
+	    <button type="submit"><img src="/images/paypal.png" width="300px;" height="100px;"/></button>
+	</form>
+</body>
+</html>

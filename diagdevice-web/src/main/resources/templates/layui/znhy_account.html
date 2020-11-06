@@ -1,0 +1,177 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<link rel="shortcut icon" th:href="@{/images/login/favicon.ico}" />
+<title th:replace="~{layui/public/common :: layui_title}">分账账户管理</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+<link rel="stylesheet" th:href="@{/css/public/common.css}" />
+<link rel="stylesheet" th:href="@{/css/public/font-awesome.min.css}" />  <!-- 图标CSS文件 -->
+<link rel="stylesheet" th:href="@{/css/profit_account.css}" />
+
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+	<div th:replace="layui/public/common :: layout_header"></div>   
+	<div th:replace="layui/public/common :: layout_menu"></div>   
+	<div class="layui-body" >
+		<div style="padding: 15px;height: 90%;">
+		<!--  ....公共部分.....  -->	
+
+	<div class="layui-fluid">
+		<div class="layui-card layui-clear" style="margin-bottom: 0;"
+			id="contentTopDiv">
+			<div class="pull-left">
+				<!-- 	搜索 -->
+				<form class="layui-form" action="">
+					<div class="layui-form-item" style="margin-bottom: 0;">
+						<div class="layui-inline">
+							<input class="layui-input" name="name" id="searchName" placeholder="请输入姓名" autocomplete="off" />
+							<i class="icon-search" style="position: absolute; right: 0; top: 11px; right: 11px; color: #ccc"></i>
+						</div>
+
+						<div class="layui-inline">
+							<a class="layui-btn layui-btn-danger " lay-submit
+								lay-filter="formDemo" id="searchBtn">搜索</a>
+						</div>
+					</div>
+				</form>
+			</div>
+			<span sec:authorize="hasAuthority('ZNHY_MGR_ACCOUNT_ADD')">
+			<div class="pull-right">
+		        <a class="layui-btn layui-btn-danger" id="addAccountBtn">添加</a>
+		    </div>
+			</span>
+		</div>
+	</div>
+	<table class="layui-hide" id="accountList" lay-filter="test"></table>
+<!--  ....公共部分.....  -->			
+        </div>
+	</div>
+	<div th:replace="layui/public/common :: layout_footer"></div>   
+</div>	
+	
+	<!-- 	添加分账账户弹出框 class="dialog" 默认隐藏-->
+	<div class="dialog" id="addAccountDialog">
+	    <h5 class="h5">
+	        <div class="title"><span class="rectangle"></span>添加合约账户</div>
+	        <i class="icon-remove icon-2x close-btn closeBtn"></i>
+	    </h5>
+	    <form class="layui-form">
+	        <div class="main-text mainText"></div>
+	        <div class="btn-group">
+	            <button type="button" class="layui-btn layui-btn-danger" lay-submit lay-filter="addAccount">保存</button>
+	            <a class="layui-btn layui-btn-primary closeBtn">返回</a>
+	        </div>
+	    </form>
+	</div>
+	
+	
+	<!-- 	编辑软件价格弹出框 class="dialog" 默认隐藏-->
+	<div class="dialog" id="editAccountDialog">
+	    <h5 class="h5">
+	        <div class="title"><span class="rectangle"></span>编辑合约账户</div>
+	        <i class="icon-remove icon-2x close-btn closeBtn"></i>
+	    </h5>
+	    <form class="layui-form">
+	        <div class="main-text mainText"></div>
+	        <div class="btn-group">
+	            <button type="button" class="layui-btn layui-btn-danger" lay-submit lay-filter="editAccount">保存</button>
+	            <a class="layui-btn layui-btn-primary closeBtn">返回</a>
+	        </div>
+	    </form>
+	</div>
+
+
+	<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+	<script type="text/javascript" th:src="@{/js/lodash/lodash.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/js/module/znhy_account.js}"></script>
+
+<script type="text/html" id="zizeng">
+    {{d.LAY_TABLE_INDEX+1}}
+</script>
+<!--   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
+<script type="text/html" id="barDemo">
+<span sec:authorize="hasAuthority('ZNHY_MGR_ACCOUNT_UPDATE')">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</span>
+</script>
+
+<script type="text/html" id="addAccountTemplate">
+	<div class="layui-form-item">
+        <label class="layui-form-label" for="userNameA"><i class="icon-star not-empty"></i> 姓名</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="userNameA" name="userName" lay-verify="required|userName" placeholder="必须和支付宝实名认证的名字一致" autocomplete="off" />
+        </div>
+    </div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label" for="accountTypeA"><i class="icon-star not-empty"></i>账户类型</label>
+		<div class="layui-input-block">
+			<select id="accountTypeA" name="accountType" lay-verify="required">
+				<option value="">请选择账户类型</option>
+				<option value="1">支付宝</option>
+				<option value="2">微信</option>
+				<option value="3">PAYPAL</option>
+				<option value="4">银行卡号</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+        <label class="layui-form-label" for="accountNameA"><i class="icon-star not-empty"></i> 账户名</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="accountNameA" name="accountName" lay-verify="required" placeholder="支付宝、微信、paypal、银行卡号" autocomplete="off" />
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-bottom: 0">
+        <label class="layui-form-label" for="telephoneA"><i class="icon-star not-empty"></i> 手机号码</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="telephoneA" name="telephone" lay-verify="required|telephone" placeholder="请输入正确的手机号码" autocomplete="off" />
+        </div>
+    </div>
+
+</script>
+<script type="text/html" id="editAccountTemplate">
+   <div class="layui-form-item">
+ 		<input type="hidden" name="id" id="editId" value="" />
+        <label class="layui-form-label" for="userNameE"><i class="icon-star not-empty"></i> 姓名</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="userNameE" name="userName" value="" lay-verify="required|userName" placeholder="必须和支付宝实名认证的名字一致" autocomplete="off" />
+        </div>
+    </div>
+	<div class="layui-form-item">
+		<label class="layui-form-label" for="accountTypeE"><i class="icon-star not-empty"></i>账户类型</label>
+		<div class="layui-input-block">
+			<select id="accountTypeE" name="accountType" lay-verify="required">
+				<option value="">请选择账户类型</option>
+				<option value="1">支付宝</option>
+				<option value="2">微信</option>
+				<option value="3">PAYPAL</option>
+				<option value="4">银行卡号</option>
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item">
+        <label class="layui-form-label" for="accountNameE"><i class="icon-star not-empty"></i> 账户名</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="accountNameE" name="accountName" value=""  lay-verify="required|alipay" placeholder="支付宝、微信、paypal、银行卡号" autocomplete="off" />
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-bottom: 0">
+        <label class="layui-form-label" for="telephoneE"><i class="icon-star not-empty"></i> 手机号码</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="telephoneE" name="telephone" value="" lay-verify="required|telephone" placeholder="请输入正确的手机号码" autocomplete="off" />
+        </div>
+    </div>
+</script>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.launch.diagdevice.blockchain";
+option java_outer_classname = "BlockChainProto";
+
+package blockchain;
+
+service User {
+  rpc CreateAsset (CreateAssetRequest) returns (TransactionReply) {}
+  rpc AssignAsset (AssignAssetRequest) returns (TransactionReply) {}
+  rpc UpdateAsset (UpdateAssetRequest) returns (AssetReply) {}
+  rpc AppendRecord (AppendRecordRequest) returns (TransactionReply) {}
+
+  rpc AssetTotalSupply (Request) returns (AssetTotalSupplyReply) {}
+  rpc AssetOf (AssetRequest) returns (AssetReply) {}
+
+  rpc AssetRecordCount (AssetRequest) returns (AssetRecordCountReply) {}
+  rpc AssetRecordOf (AssetRecordOfRequest) returns (AssetRecordOfReply) {}
+
+  rpc SendToAddr (SendToAddrRequest) returns (TransactionReply) {}
+}
+
+message Request {
+  string api_key = 1;
+}
+
+message TransactionReply {
+  string txn_hash = 1;  // 交易哈希
+}
+
+message CreateAssetRequest {
+  string api_key = 1;
+  string asset_id = 2;      // 资产 ID
+  string asset_name = 3;    // 资产名称
+  string asset_content = 4; // 附加内容
+  string asset_hash = 5;    // 资产 Hash
+}
+
+message AssignAssetRequest {
+  string api_key = 1;
+  string asset_owner = 2;   // 资产所属人的钱包地址
+  string asset_id = 3;      // 资产 ID
+  string asset_name = 4;    // 资产名称
+  string asset_content = 5; // 附加内容
+  string asset_hash = 6;    // 资产 Hash
+}
+
+message UpdateAssetRequest {
+  string api_key = 1;
+  string asset_id = 2;      // 需要更新的资产ID
+  string asset_name = 3;    // 新的资产名称
+  string asset_content = 4; // 新的资产内容
+  string asset_hash = 5;    // 新的资产 Hash
+}
+
+message AppendRecordRequest {
+  string api_key = 1;
+  string asset_id = 2;      // 资产ID
+  string record_name = 3;   // 记录名称
+  string content = 4;       // 记录内容
+  string meta_hash = 5;     // 记录的哈希值
+}
+
+message AssetTotalSupplyReply {
+  string total_supply = 1;  // 资产总数量, 十进制字符串
+}
+
+
+message AssetRequest {
+  string api_key = 1;
+  string asset_id = 2;  // 资产ID
+}
+
+message AssetRecordOfRequest {
+  string api_key = 1;
+  string asset_id = 2;  // 资产ID
+  string meta_hash = 3; // 资产某一个记录的哈希值
+}
+
+
+message AssetRecordCountReply {
+  string record_count = 1;  // 资产中记录的数量, 十进制字符串
+}
+
+message AssetRecordOfReply {
+  string record_name = 1;   // 记录名称
+  string content = 2;       // 记录内容
+  string meta_hash = 3;     // 记录的哈希值
+  uint64 update_time = 4;   // 记录更新时间
+}
+
+message AssetReply {
+  string address_owner = 1; // 资产所属人账号地址
+  string asset_id = 2;      // 资产ID
+  string asset_name = 3;    // 资产名称
+  string asset_content = 4; // 附加内容
+  string asset_hash = 5;    // 资产 Hash
+  uint32 status = 6;        // 资产状态
+  uint64 create_time = 7;   // 资产创建时间, Unix 时间
+}
+
+message SendToAddrRequest {
+  string api_key = 1;
+  string addr = 2;    // 收款人地址
+  string value = 3;   // 十六进制形式的转账金额,单位为wei
+}

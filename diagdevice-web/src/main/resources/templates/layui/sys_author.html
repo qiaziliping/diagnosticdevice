@@ -1,0 +1,203 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<link rel="shortcut icon" th:href="@{/images/login/favicon.ico}" />
+<title th:replace="~{layui/public/common :: layui_title}">系统权限[菜单]管理</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+<link rel="stylesheet" th:href="@{/css/public/common.css}" />
+<link rel="stylesheet" th:href="@{/css/public/font-awesome.min.css}" />  <!-- 图标CSS文件 -->
+
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+	<div th:replace="layui/public/common :: layout_header"></div>   
+	<div th:replace="layui/public/common :: layout_menu"></div>   
+	<div class="layui-body" >
+		<div style="padding: 15px;height: 90%;">
+		<!--  ....公共部分.....  -->	
+		
+	<div class="layui-fluid">
+		<div class="layui-card layui-clear" style="margin-bottom: 0;"
+			id="contentTopDiv">
+			<div class="pull-left">
+				<!-- 	搜索 -->
+				<form class="layui-form" action="">
+					<div class="layui-form-item" style="margin-bottom: 0;">
+						<div class="layui-inline">
+							<input class="layui-input" name="resourceName" id="searchResourceName" placeholder="请输入权限名称" autocomplete="off" />
+						</div>
+						<div class="layui-inline">
+		                    <input class="layui-input" name="resourceCode" id="authKeyInput" placeholder="请输入权限KEY" autocomplete="off" />
+		                </div>
+						<div class="layui-inline">
+							<a class="layui-btn layui-btn-danger " lay-submit
+								lay-filter="formDemo" id="searchBtn">搜索</a>
+						</div>
+					</div>
+				</form>
+			</div>
+			<span sec:authorize="hasAuthority('SYS_MGR_AUTH_ADD')">
+			<div class="pull-right">
+		        <a class="layui-btn layui-btn-danger" id="addSoftBtn">添加</a>
+		    </div>
+			</span>
+		</div>
+	</div>
+	<table class="layui-hide" id="sysAuthorList" lay-filter="test"></table>
+	
+		<!--  ....公共部分.....  -->			
+        </div>
+	</div>
+	<div th:replace="layui/public/common :: layout_footer"></div>   
+</div>
+	
+	<!-- 	添加弹出框 class="dialog" 默认隐藏-->
+	<div class="dialog" id="addAuthDialog">
+	    <h5 class="h5">
+	        <div class="title"><span class="rectangle"></span>添加权限</div>
+	        <i class="icon-remove close-btn closeBtn"></i>
+	    </h5>
+	    <form class="layui-form">
+	        <div class="main-text mainText"></div>
+	        <div class="btn-group">
+	            <button class="layui-btn layui-btn-danger" lay-submit lay-filter="addAuth">保存</button>
+	            <a class="layui-btn layui-btn-primary closeBtn">返回</a>
+	        </div>
+	    </form>
+	</div>
+<script type="text/html" id="addAuthTemplate">
+    <div class="layui-form-item">
+        <label class="layui-form-label"><i class="icon-star not-empty"></i> 父菜单</label>
+        <div class="layui-input-block">
+            <select id="parentMenuA" name="parentMenu" lay-filter="parentMenuA" lay-verify="required" lay-search>
+                <option value="">请选择</option>
+                <optgroup  label="一级菜单">
+                    <option value="0">无</option>
+                    {{# for (var i=0, iLen = d.length; i < iLen; i++) { }}
+                    <option value="{{d[i].id}}">{{d[i].resourceName}}</option>
+                    {{# } }}
+                </optgroup >
+                {{# for (var k=0, kLen = d.length; k < kLen; k++) {
+                if (d[k].childList) { }}
+                <optgroup  label="{{d[k].resourceName}}">
+                    {{# for (var j=0, jLen = d[k].childList.length; j < jLen; j++) { }}
+                    <option value="{{d[k].childList[j].id}}">{{d[k].childList[j].resourceName}}</option>
+                    {{# } }}
+                </optgroup >
+                {{# } } }}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="authNameA"><i class="icon-star not-empty"></i> 权限名称</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="authNameA" name="authName" lay-verify="required|authName" autocomplete="off" placeholder="2到30位" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="authKeyA"><i class="icon-star not-empty"></i> 权限KEY</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="authKeyA" name="authKey" lay-verify="required|authKey" placeholder="2到100位的字母、下划线" autocomplete="off" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><i class="icon-star not-empty"></i> 权限类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="authType" value="2" title="一级菜单" lay-filter="authType" checked />
+            <input type="radio" name="authType" value="3" title="二级菜单" lay-filter="authType" />
+            <input type="radio" name="authType" value="5" title="权限" lay-filter="authType" />
+        </div>
+    </div>
+    <div class="layui-form-item resourceUrl" style="margin-bottom: 0;"></div>
+</script>
+
+<!-- 	编辑弹出框 class="dialog" 默认隐藏-->
+<div class="dialog edit" id="editAuthDialog">
+    <h5 class="h5">
+        <div class="title"><span class="rectangle"></span>编辑权限</div>
+        <i class="icon-remove close-btn closeBtn"></i>
+    </h5>
+    <form class="layui-form">
+        <div class="main-text mainText">
+            <div class="loading-spinner">
+                <svg viewBox="25 25 50 50" class="circular"><circle cx="50" cy="50" r="20" fill="none" class="path"></circle></svg>
+            </div>
+        </div>
+        <div class="btn-group">
+            <button class="layui-btn layui-btn-danger" lay-submit lay-filter="editAuth">保存</button>
+            <a class="layui-btn layui-btn-primary closeBtn">返回</a>
+        </div>
+    </form>
+</div>
+<script type="text/html" id="editAuthTemplate">
+    <div class="layui-form-item">
+        <label class="layui-form-label">权限类型</label>
+        <div class="layui-input-block">
+            {{#
+            var authType = '';
+            switch(d.resourceType) {
+            case 2: authType = '一级菜单'; break;
+            case 3: authType = '二级菜单'; break;
+            case 5: authType = '权限'; break;
+            default: authType = '';
+            }
+            }}
+            <input type="hidden" name="id" value="{{d.id}}" autocomplete="off" />
+            <input type="hidden" name="parentId" value="{{d.parentId}}" autocomplete="off" />
+            <input type="hidden" name="authType" value="{{d.resourceType}}" autocomplete="off" />
+            <div class="layui-form-mid layui-word-aux" style="margin-left: 11px">{{authType}}</div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="authNameE"><i class="icon-star not-empty"></i> 权限名称</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="authNameE" name="authName" value="{{d.resourceName}}"
+                   lay-verify="required|authName" autocomplete="off" placeholder="2到30位" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" for="authKeyE"><i class="icon-star not-empty"></i> 权限KEY</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="authKeyE" name="authKey" value="{{d.resourceCode}}"
+                   lay-verify="required|authKey" placeholder="2到100位的字母、下划线" autocomplete="off" />
+        </div>
+    </div>
+    {{# if (d.resourceType === 5) { }}
+    <div class="layui-form-item resourceUrl" style="margin-bottom: 0">
+        <label class="layui-form-label" id="resourceUrlE"><i class="icon-star not-empty"></i> 接口地址</label>
+        <div class="layui-input-block">
+            <input class="layui-input" id="resourceUrlE" name="resourceUrl" value="{{d.resourceUrl}}"
+                   lay-verify="required|resourceUrl" autocomplete="off" placeholder="2-100位的字母、数字、_、/。备注：见接口文档" />
+        </div>
+    </div>
+    {{# } }}
+</script>
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/lodash/lodash.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<script type="text/javascript" th:src="@{/js/module/sys_author.js}"></script>
+
+<script type="text/html" id="zizeng">
+    {{d.LAY_TABLE_INDEX+1}}
+</script>
+
+<script type="text/html" id="barDemo">
+<span sec:authorize="hasAuthority('SYS_MGR_AUTH_UPDATE')">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+</span>
+<span sec:authorize="hasAuthority('SYS_MGR_AUTH_DEL')">
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</span>
+</script>
+
+
+
+</body>
+</html>

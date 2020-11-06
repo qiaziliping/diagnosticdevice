@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="diagdevice-app-api" />
+        <module name="diagdevice-app-client" />
+        <module name="diagdevice-app-service" />
+        <module name="diagdevice-blockchain" />
+        <module name="diagdevice-blockchain-api" />
+        <module name="diagdevice-common" />
+        <module name="diagdevice-mycar-api" />
+        <module name="diagdevice-mycar-service" />
+        <module name="diagdevice-pay-api" />
+        <module name="diagdevice-pay-service" />
+        <module name="diagdevice-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="diagdevice-app-api" target="1.8" />
+      <module name="diagdevice-app-client" target="1.8" />
+      <module name="diagdevice-app-service" target="1.8" />
+      <module name="diagdevice-blockchain" target="1.8" />
+      <module name="diagdevice-blockchain-api" target="1.8" />
+      <module name="diagdevice-common" target="1.8" />
+      <module name="diagdevice-mycar-api" target="1.8" />
+      <module name="diagdevice-mycar-service" target="1.8" />
+      <module name="diagdevice-pay-api" target="1.8" />
+      <module name="diagdevice-pay-service" target="1.8" />
+      <module name="diagdevice-web" target="1.8" />
+      <module name="diagnosticdevice" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="diagdevice-app-api" options="-parameters" />
+      <module name="diagdevice-app-client" options="-parameters" />
+      <module name="diagdevice-app-service" options="-parameters" />
+      <module name="diagdevice-blockchain" options="-parameters" />
+      <module name="diagdevice-blockchain-api" options="-parameters" />
+      <module name="diagdevice-common" options="-parameters" />
+      <module name="diagdevice-mycar-api" options="-parameters" />
+      <module name="diagdevice-mycar-service" options="-parameters" />
+      <module name="diagdevice-pay-api" options="-parameters" />
+      <module name="diagdevice-pay-service" options="-parameters" />
+      <module name="diagdevice-web" options="-parameters" />
+    </option>
+  </component>
+</project>

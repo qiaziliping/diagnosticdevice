@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>区块链诊断设备管理平台</title>
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+<link rel="stylesheet" th:href="@{/css/public/common.css}" />
+
+
+
+<!-- 此页面是通过iframe的方式进行页面跳转的，目前此页面没有用到，保留一种方式放这里 -->
+
+
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+
+		<div th:fragment="layout_header" class="layui-header">
+			<div class="layui-logo layui-unselect"><span class="inner-logo">区块链诊断设备管理平台</span></div>
+			
+			<!-- 头部区域（可配合layui已有的水平导航） -->
+			<!-- <ul class="layui-nav layui-layout-left">
+				<li class="layui-nav-item"><a href="">控制台</a></li>
+				<li class="layui-nav-item"><a href="">商品管理</a></li>
+				<li class="layui-nav-item"><a href="">用户</a></li>
+				<li class="layui-nav-item"><a href="javascript:;">其它系统</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="">邮件管理</a>
+						</dd>
+						<dd>
+							<a href="">消息管理</a>
+						</dd>
+						<dd>
+							<a href="">授权管理</a>
+						</dd>
+					</dl></li>
+			</ul> -->
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item">
+					<a href="javascript:;"> 
+						<img src="http://t.cn/RCzsdCq" ;; class="layui-nav-img" /> 贤心
+					</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="">基本资料</a>
+						</dd>
+						<dd>
+							<a href="">安全设置</a>
+						</dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+<!-- 					<a href="">退了</a> -->
+					<a th:href="@{/account/logout}">退出</a>
+				</li>
+			</ul>
+		</div>
+
+		<div th:fragment="layout_menu" class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+				<ul class="layui-nav layui-nav-tree" lay-filter="test">
+					
+					<!-- <li class="layui-nav-item layui-nav-itemed">
+					<a class="" href="javascript:;">所有商品</a>
+						<dl class="layui-nav-child">
+							                        <dd><a lay-href="/app/content/list.html">用户列表</a></dd>
+							<dd>
+								<a th:href="@{/view/goAppUserList}" target="option" id="userManager">用户管理</a>
+							</dd>
+							<dd>
+								<a th:href="@{/view/goDeviceList}" target="option" >设备管理</a>
+							</dd>
+							<dd>
+								<a th:href="@{/view/goAppConsumerList}" target="option" >消费记录</a>
+							</dd>
+							<dd>
+								<a th:href="@{/view/goDiagPriceList}" target="option" >价格管理</a>
+							</dd>
+						</dl>
+					</li> -->
+					<li class="layui-nav-item" id="dfClick"><a th:href="@{/view/goAppUserList}" target="option" id="userManager">用户管理</a></li>
+					<li class="layui-nav-item"><a th:href="@{/view/goDeviceList}" target="option">设备管理</a></li>
+					<li class="layui-nav-item"><a th:href="@{/view/goAppConsumerList}" target="option">消费记录</a></li>
+					<li class="layui-nav-item"><a th:href="@{/view/goDiagPriceList}" target="option">价格管理</a></li>
+					<li class="layui-nav-item"><a href="javascript:;">分账管理</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a th:href="@{/view/goZnhyAllocationList}" target="option">资产分账管理</a>
+							</dd>
+							<dd>
+								<a th:href="@{/view/goZnhyAccountList}" target="option">分账账户管理</a>
+							</dd>
+							<dd>
+								<a th:href="@{/view/goAllocationGroupList}" target="option">分账规则管理</a>
+							</dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item"><a href="javascript:;">系统管理</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a th:href="@{/view/goSysUserList}" target="option">用户管理</a>
+							</dd>
+							<dd>
+								<a th:href="@{/view/goSysRoleList}" target="option">角色管理</a>
+							</dd>
+							<dd>
+								<a th:href="@{/view/goSysAuthorList}" target="option">权限管理</a>
+							</dd>
+						</dl>
+					</li>
+<!-- 					<li class="layui-nav-item"><a href="">云市场</a></li> -->
+				</ul>
+			</div>
+		</div>
+
+		<div class="layui-body" >
+			<!-- 内容主体区域 -->
+			<div style="padding: 15px;height: 90%;" id="bodyContent">
+<!-- 				<table class="layui-hide" id="test"></table> -->
+				<iframe id="option1" name="option"  style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>
+<!-- 				<iframe id="option" name="option" th:href="@{/sysuser/goTestUserList}" style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe> -->
+            </div>
+		</div>
+
+		<!-- <div class="layui-body" id="container">
+            <div class="layui-tab" lay-filter="tabs" lay-allowClose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">首页</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">首页内容</div>
+                </div>
+            </div>
+        </div> -->
+		
+
+		<div th:fragment="layout_footer" class="layui-footer" >
+			<!-- 底部固定区域 -->
+			<center>恰锅锅版权所有&copy;Tel:15361664121</center>
+		</div>
+	</div>
+<script type="text/javascript" th:src="@{/js/jquery-1.12.4.min.js}"></script>
+<!-- <script type="text/javascript" th:src="@{/layui/layui.js}"></script> -->
+<script type="text/javascript" th:src="@{/layui/layui.all.js}"></script>
+<script>
+
+layui.use('jquery', function(){
+	var $ = layui.jquery;
+	
+	$(function() { 
+		
+		//debugger;
+		var url =  $("#userManager").attr("href");
+		
+// 		location.href = url;
+		$('#userManager').trigger("click");
+// 		$('#userManager').click();
+		
+	});
+	
+	
+	 $("#userManager").on("click",function(){		
+		
+		var url =  $("#userManager").attr("href");
+		
+// 		location.href = url;
+		
+		/* var index = layui.layer.open({
+            title: "消费记录详情xx",
+            type: 2,
+            content: "/view/goAppUserList",
+            success: function (layero, index) {
+                setTimeout(function () {
+                    layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                }, 500);
+            }
+        });
+        layui.layer.full(index); */
+		
+	});
+	
+});
+
+
+	
+//JavaScript代码区域
+// layui.use('element', function(){
+
+//  var element = layui.element;
+ 
+//  	element.on('nav(hbkNavbar)',function(elem){
+// 	     /*使用DOM操作获取超链接的自定义data属性值*/
+// 	     var options = eval('('+elem.context.children[0].dataset.options+')');
+// 	     var url = options.url;
+// 	     var title = options.title;
+// 	     element.tabAdd('tabs',{
+// 	         title : title,
+// 	         content : '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>',
+// 	         id : '111'
+// 	     });
+//  	});
+
+// }); 
+</script>
+</body>
+</html>

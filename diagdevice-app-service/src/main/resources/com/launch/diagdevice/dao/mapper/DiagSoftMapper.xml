@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.DiagSoftMapper">
+
+	<resultMap id="baseResultMap" type="DiagSoft">
+		<result property="softId" column="soft_id" />
+		<result property="pdtTypeId" column="pdt_type_id" />
+		<result property="softName" column="soft_name" />
+		<result property="isActive" column="is_active" />
+		<result property="softApplicableArea" column="soft_applicable_area" />
+		<result property="status" column="status" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+	
+
+	<sql id="baseNotIdColumns">
+		soft_id,pdt_type_id,soft_name,is_active,soft_applicable_area,status,update_user_id,update_time
+	</sql>
+	<sql id="baseColumns">
+		soft_id,pdt_type_id,soft_name,is_active,soft_applicable_area,status,update_user_id,update_time
+	</sql>
+
+
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="softId != null">
+				AND ${columnPrefix}soft_id = #{softId}
+			</if>
+			<if test="pdtTypeId != null">
+				AND ${columnPrefix}pdt_type_id = #{pdtTypeId}
+			</if>
+			<if test="softName != null">
+				AND ${columnPrefix}soft_name = #{softName}
+			</if>
+			<if test="isActive != null">
+				AND ${columnPrefix}is_active = #{isActive}
+			</if>
+			<if test="softApplicableArea != null">
+				AND ${columnPrefix}soft_applicable_area = #{softApplicableArea}
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="updateColumns">
+		<set>
+			<if test="isActive != null">
+				is_active = #{isActive},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime}
+			</if>
+		</set>
+	</sql>
+	
+	<update id="update" statementType="PREPARED">
+		UPDATE diag_soft <include refid="updateColumns" /> 
+		WHERE soft_id = #{softId}
+	</update>
+	
+	<select id="selectByIndex" statementType="PREPARED" resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM diag_soft
+		<include refid="whereClause">
+			<property name="columnPrefix" value="" />
+		</include>
+		ORDER BY ${orderBy} ${orderByType}
+	</select>
+	
+	<select id="selectById" parameterType="Long" resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM diag_soft 
+		WHERE soft_id = #{softId}
+	</select>
+	
+	<select id="selectByCondition" statementType="PREPARED" resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM diag_soft
+		<include refid="whereClause">
+			<property name="columnPrefix" value="" />
+		</include>
+		ORDER BY soft_name ASC
+	</select>
+	<!-- 	查询全部产品类型ID -->
+	<select id="selectPdtTypeAll" statementType="PREPARED" resultType="long">
+		SELECT
+			DISTINCT pdt_type_id 
+		FROM diag_soft
+	</select>
+
+	<insert id="batchSave" parameterType="List">
+		INSERT INTO diag_soft (
+		<include refid="baseNotIdColumns" />
+		) VALUES 
+		<foreach collection ="list" item="soft" separator =",">
+          (#{soft.softId},#{soft.pdtTypeId},#{soft.softName}, 0,#{soft.softApplicableArea},#{soft.status},#{soft.updateUserId},#{soft.updateTime})
+    	</foreach >
+    	
+	</insert>
+
+</mapper>
+

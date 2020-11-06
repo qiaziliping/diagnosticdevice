@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.UserOrderMapper">
+
+	<resultMap id="baseResultMap" type="UserOrder">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="serialNo" column="serial_no" />
+		<result property="orderNo" column="order_no" />
+		<result property="price" column="price" />
+		<result property="currency" column="currency" />
+		<result property="payFrom" column="pay_from" />
+		<result property="payTime" column="pay_time" />
+		<result property="thirdTradeNo" column="third_trade_no" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+
+	<sql id="baseNotIdColumns">
+		user_id,serial_no,order_no,price,currency,pay_from,pay_time,third_trade_no,remark,status,create_time
+	</sql>
+	<sql id="baseColumns">
+		id,user_id,serial_no,order_no,price,currency,pay_from,pay_time,third_trade_no,remark,status,create_time
+	</sql>
+
+
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="userId != null">
+				AND ${columnPrefix}user_id = #{userId}
+			</if>
+			<if test="serialNo != null">
+				AND ${columnPrefix}serial_no = #{serialNo}
+			</if>
+			<if test="orderNo != null">
+				AND ${columnPrefix}order_no = #{orderNo}
+			</if>
+			<if test="price != null">
+				AND ${columnPrefix}price = #{price}
+			</if>
+			<if test="currency != null and currency != ''">
+				AND ${columnPrefix}currency = #{currency}
+			</if>
+			<if test="status != null">
+				AND ${columnPrefix}status = #{status}
+			</if>
+		</trim>
+	</sql>
+	
+	
+	<select id="selectOne" statementType="PREPARED" resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user_order
+		<include refid="whereClause">
+			<property name="columnPrefix" value="" />
+		</include>
+	</select>
+
+	<select id="selectById" parameterType="Long"
+		resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user_order
+		WHERE id = #{id}
+	</select>
+
+
+	<insert id="save" parameterType="UserOrder" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO user_order (
+		<include refid="baseNotIdColumns" />
+		) VALUES (
+		#{userId},
+		#{serialNo},
+		#{orderNo},
+		#{price},
+		#{currency},
+		#{payFrom},
+		#{payTime},
+		#{thirdTradeNo},
+		#{remark},
+		#{status},
+		#{createTime}
+		)
+	</insert>
+
+</mapper>
+

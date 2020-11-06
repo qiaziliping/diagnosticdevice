@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-app-api/diagdevice-app-api.iml" filepath="$PROJECT_DIR$/diagdevice-app-api/diagdevice-app-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-app-client/diagdevice-app-client.iml" filepath="$PROJECT_DIR$/diagdevice-app-client/diagdevice-app-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-app-service/diagdevice-app-service.iml" filepath="$PROJECT_DIR$/diagdevice-app-service/diagdevice-app-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-blockchain/diagdevice-blockchain.iml" filepath="$PROJECT_DIR$/diagdevice-blockchain/diagdevice-blockchain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-blockchain-api/diagdevice-blockchain-api.iml" filepath="$PROJECT_DIR$/diagdevice-blockchain-api/diagdevice-blockchain-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-common/diagdevice-common.iml" filepath="$PROJECT_DIR$/diagdevice-common/diagdevice-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-mycar-api/diagdevice-mycar-api.iml" filepath="$PROJECT_DIR$/diagdevice-mycar-api/diagdevice-mycar-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-mycar-service/diagdevice-mycar-service.iml" filepath="$PROJECT_DIR$/diagdevice-mycar-service/diagdevice-mycar-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-pay-api/diagdevice-pay-api.iml" filepath="$PROJECT_DIR$/diagdevice-pay-api/diagdevice-pay-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-pay-service/diagdevice-pay-service.iml" filepath="$PROJECT_DIR$/diagdevice-pay-service/diagdevice-pay-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagdevice-web/diagdevice-web.iml" filepath="$PROJECT_DIR$/diagdevice-web/diagdevice-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/diagnosticdevice.iml" filepath="$PROJECT_DIR$/diagnosticdevice.iml" />
+    </modules>
+  </component>
+</project>

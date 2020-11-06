@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.ConsumerRecordMapper">
+
+	<!-- <resultMap id="baseResultMap" type="ConsumerRecord">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="deviceSerialNumber" column="device_serial_number" />
+		<result property="consumerNo" column="consumer_no" />
+		<result property="softwareName" column="software_name" />
+		<result property="vinCode" column="vin_code" />
+		<result property="price" column="price" />
+		<result property="payFrom" column="pay_from" />
+		<result property="payTime" column="pay_time" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="createTime" column="create_time" />
+	</resultMap> -->
+	
+	<resultMap id="baseResultMap" type="ConsumerRecord">
+		<result property="orderId" column="order_id" />
+		<result property="softName" column="soft_name" />
+		<result property="vinCode" column="vin_code" />
+		<result property="diagStartTime" column="diag_start_time" />
+		<result property="diagEndTime" column="diag_end_time" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+
+	<sql id="baseNotIdColumns">
+		order_id,soft_name,vin_code,diag_start_time,diag_end_time,create_time
+	</sql>
+	<sql id="baseColumns">
+		order_id,soft_name,vin_code,diag_start_time,diag_end_time,create_time
+	</sql>
+
+
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="orderId != null">
+				AND ${columnPrefix}order_id = #{orderId}
+			</if>
+			<if test="softName != null">
+				AND ${columnPrefix}soft_name = #{softName}
+			</if>
+			<if test="vinCode != null">
+				AND ${columnPrefix}vin_code = #{vinCode}
+			</if>
+			<if test="status != null">
+				AND ${columnPrefix}status = #{status}
+			</if>
+		</trim>
+	</sql>
+
+	<update id="batchUpdateStatus" parameterType="map">
+		<!-- UPDATE user_consumer_record
+		SET status = 1 WHERE user_id = #{userId} AND id IN
+		<foreach collection="listIds" item="sid" open="(" separator=","
+			close=")"> #{sid}
+		</foreach> -->
+	</update>
+
+	<select id="selectByIndex" statementType="PREPARED" resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user_consumer_record
+		<include refid="whereClause">
+			<property name="columnPrefix" value="" />
+		</include>
+		ORDER BY ${orderBy} ${orderByType}
+	</select>
+	
+	<select id="selectById" parameterType="Long"
+		resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM user_consumer_record
+		WHERE order_id = #{id}
+	</select>
+	
+	<select id="selectVoByRequest" statementType="PREPARED" resultType="ConsumerRecordVo">
+		SELECT 
+			A.order_id AS orderId,
+			A.soft_name AS softName,
+			A.vin_code AS vinCode,
+			A.diag_start_time AS diagStartTime,
+			A.diag_end_time AS diagEndTime,
+			A.create_time AS createTime,
+			B.price AS price,
+			B.user_id AS userId,
+			B.order_no AS orderNo,
+			B.currency AS currency,
+			C.username AS username
+						
+		FROM user_consumer_record A 
+		LEFT JOIN user_order B on A.order_id = B.id
+		LEFT JOIN  user C ON B.user_id = C.id
+		<trim prefix="WHERE" prefixOverrides="OR|AND">
+			<if test="userId != null">
+				AND C.id = #{userId}
+			</if>
+			<if test="username != null and username != ''">
+				AND C.username LIKE CONCAT('%',#{username},'%')
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND TRIM(B.order_no) = TRIM(#{orderNo})
+			</if>
+			<if test="softName != null and softName != ''">
+				AND TRIM(A.soft_name) = TRIM(#{softName})
+			</if>
+		</trim>
+		ORDER BY ${sortBy} ${sortType}
+	</select>
+
+	<insert id="save" parameterType="ConsumerRecord">
+		INSERT INTO user_consumer_record (
+		<include refid="baseNotIdColumns" />
+		) VALUES (
+		#{orderId},
+		#{softName},
+		#{vinCode},
+		#{diagStartTime},
+		#{diagEndTime},
+		#{createTime}
+		)
+	</insert>
+
+</mapper>
+

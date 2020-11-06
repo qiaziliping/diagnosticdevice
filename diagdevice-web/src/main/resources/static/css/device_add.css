@@ -1,0 +1,136 @@
+@charset "UTF-8";
+.layui-form-label { width: 90px; }
+.layui-input-block { margin-left: 120px; }
+.layui-form-item .layui-input-inline { width: 280px; }
+
+/** 图片上传 **/
+.choose-img {
+    position: relative;
+    padding: 8px 4px 0 0;
+    color: #ccc;
+    cursor: pointer;
+}
+.choose-img i { font-size: 48px; }
+.choose-img .choose-img-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    filter:alpha(opacity=0);
+    cursor: pointer;
+}
+.uploaded-img { display: none; }
+.uploaded-img img { display: block; max-width: 360px; }
+/* .uploaded-img img { display: block; max-width: 170px; } */
+
+.block-add {
+    display: inline-block;
+    width: 40px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+.block-add:hover { border-color: #f01414; }
+.block-add .icon-plus {
+    display: inline;
+    color: #666;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
+.block-add:hover .icon-plus { color: #f01414; }
+
+
+/** 选择位置对话框 **/
+.dialog {
+    position: relative;
+    display: none;
+    width: 980px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+.dialog.add-device { width: 500px }
+.dialog .h5 {
+    position: relative;
+    font-size: 18px;
+    color: #222;
+    border-bottom: 1px solid #ccc;
+}
+.dialog .h5 .title { padding: 16px 40px;}
+.dialog .h5 .title .rectangle {
+    display: inline-block;
+    margin-left: -16px;
+    margin-right: 10px;
+    vertical-align: -5px;
+    width: 4px;
+    height: 24px;
+    background-color: #f01414;
+}
+.dialog .h5 .search {
+    position: absolute;
+    top: 12px;
+    left: 220px;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+.dialog .h5 .search .layui-input-inline {
+    width: auto;
+}
+.dialog .h5 .search .layui-input-inline .layui-input {
+    width: 520px;
+    font-size: 16px;
+}
+.dialog .h5 .search .layui-input-inline .icon-search {
+    position: absolute;
+    top: -1px;
+    right: 0;
+    padding: 8px 16px;
+    font-size: 22px;
+    color: #ccc;
+    cursor: pointer;
+}
+.dialog .h5 .close-btn {
+    position: absolute;
+    top: 2px;
+    right: 32px;
+    padding: 8px;
+    color: #ccc;
+    cursor: pointer;
+    -webkit-transition: all .2s;
+    transition: all .2s;
+    z-index: 1;
+}
+.dialog .h5 .close-btn:hover { color: #b2b2b2; }
+.dialog .main-text {
+    padding: 24px 40px;
+    height: 600px;
+    font-size: 14px;
+}
+.dialog.add-device .main-text { height: auto; }
+.dialog.add-device .main-text .layui-form-label {
+    padding-left: 0;
+    width: 74px;
+}
+.dialog.add-device .main-text .layui-input-block { margin-left: 104px; }
+.dialog .btn-group {
+    padding: 24px 40px;
+    text-align: right;
+    border-top: 1px solid #ccc;
+}
+.position-icon {
+    padding: 5px 0;
+    font-size: 20px;
+    color: #f66;
+    cursor: pointer;
+}
+.position-icon:hover {
+    color: #f01414;
+}
+a.link { color: #f66; cursor: pointer; }
+a.link:hover { color: #f01414; }

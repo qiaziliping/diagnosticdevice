@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.SysUserRoleMapper">
+
+	<resultMap id="baseResultMap" type="SysUserRole">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="roleId" column="role_id" />
+	</resultMap>
+	<sql id="baseNotIdColumns">
+		user_id,role_id
+	</sql>
+	<sql id="baseColumns">
+		id,user_id,role_id
+	</sql>
+
+	<sql id="updateColumns">
+		<set>
+			<if test="userId != null">
+				user_id = #{userId},
+			</if>
+			<if test="roleId != null">
+				role_id = #{roleId},
+			</if>
+		</set>
+	</sql>
+	
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="userId != null">
+				AND ${columnPrefix}user_id = #{userId}
+			</if>
+			<if test="roleId != null">
+				AND ${columnPrefix}role_id = #{roleId}
+			</if>
+		</trim>
+	</sql>
+	
+	<update id="update" parameterType="SysUserRole">
+		UPDATE sys_user_role 
+		<include refid="updateColumns" />
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteByUserId" parameterType="Long">
+		DELETE FROM sys_user_role 
+		WHERE user_id = #{userId}
+	</delete>
+	
+	<delete id="deleteByRoleId" parameterType="Long">
+		DELETE FROM sys_user_role 
+		WHERE role_id = #{roleId}
+	</delete>
+
+	<select id="selectById" parameterType="Long"
+		resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM sys_user_role
+		WHERE id = #{id}
+	</select>
+	
+	<select id="selectVoByCondition" statementType="PREPARED" resultType="SysUserRoleVo">
+		SELECT 
+			A.role_id AS roleId,
+			A.user_id AS userId,
+			B.role_name AS roleName,
+			B.role_code AS roleCode
+		FROM sys_user_role A,sys_role B
+		WHERE A.role_id = B.id
+		<if test="userId != null">
+			AND A.user_id = #{userId}
+		</if>
+		<if test="roleId != null">
+			AND A.role_id = #{roleId}
+		</if>
+	</select>
+
+	<insert id="save" parameterType="SysUserRole">
+		INSERT INTO sys_user_role (
+		<include refid="baseNotIdColumns" />
+		) VALUES (
+		#{userId},
+		#{roleId}
+		)
+	</insert>
+	
+	<insert id="batchSave" parameterType="List">
+		INSERT INTO sys_user_role (
+		<include refid="baseNotIdColumns" />
+		) VALUES 
+		<foreach collection ="list" item="ur" separator =",">
+          (#{ur.userId}, #{ur.roleId})
+    	</foreach>
+    	
+	</insert>
+	
+</mapper>
+

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.SysRoleAuthorityMapper">
+
+	<resultMap id="baseResultMap" type="SysRoleAuthority">
+		<result property="id" column="id" />
+		<result property="roleId" column="role_id" />
+		<result property="resourceId" column="resource_id" />
+	</resultMap>
+	
+	<sql id="baseNotIdColumns">
+		role_id,resource_id
+	</sql>
+	<sql id="baseColumns">
+		id,role_id,resource_id
+	</sql>
+
+	<sql id="updateColumns">
+		<set>
+			<if test="roleId != null">
+				role_id = #{roleId},
+			</if>
+			<if test="resourceId != null">
+				resource_id = #{resourceId},
+			</if>
+		</set>
+	</sql>
+	
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="roleId != null">
+				AND ${columnPrefix}role_id = #{roleId}
+			</if>
+			<if test="resourceId != null">
+				AND ${columnPrefix}resource_id = #{resourceId}
+			</if>
+		</trim>
+	</sql>
+	
+	<update id="update" parameterType="SysRoleAuthority">
+		UPDATE sys_role_authority 
+		<include refid="updateColumns" />
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="deleteByRoleId" parameterType="Long">
+		DELETE FROM sys_role_authority 
+		WHERE role_id = #{roleId}
+	</delete>
+	<delete id="deleteByAuthId" parameterType="Long">
+		DELETE FROM sys_role_authority 
+		WHERE auth_id = #{authId}
+	</delete>
+
+	<select id="selectById" parameterType="Long"
+		resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM sys_role_authority
+		WHERE id = #{id}
+	</select>
+	
+	<select id="selectByRoleId" parameterType="Long"
+		resultMap="baseResultMap">
+		SELECT
+		<include refid="baseColumns" />
+		FROM sys_role_authority
+		WHERE role_id = #{id}
+	</select>
+	
+	<insert id="save" parameterType="SysRoleAuthority">
+		INSERT INTO sys_role_authority (
+		<include refid="baseNotIdColumns" />
+		) VALUES (
+		#{roleId},
+		#{resourceId}
+		)
+	</insert>
+	
+	<insert id="batchSave" parameterType="list">
+		INSERT INTO sys_role_authority 
+		(<include refid="baseNotIdColumns" />)
+		VALUES
+		<foreach collection="list" item="ra" separator="," >
+			(#{ra.roleId},#{ra.resourceId})
+		</foreach>
+	</insert>
+	
+</mapper>
+

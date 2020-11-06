@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	  
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title th:fragment="layui_title">区块链诊断设备管理平台</title>
+	<link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+	<link rel="stylesheet" th:href="@{/css/public/common.css}" />
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+
+<!-- 		<div th:fragment="layout_header(username,roleList)" class="layui-header"> -->
+		<div th:fragment="layout_header" class="layui-header">
+			<div class="layui-logo layui-unselect"><span class="inner-logo">区块链诊断设备管理平台</span></div>
+			
+			<ul class="layui-nav layui-layout-right">
+				<li class="layui-nav-item">
+					<a href="javascript:;">
+<!-- 						<img src="http://t.cn/RCzsdCq"  class="layui-nav-img" /> 贤心 -->
+							你好！
+							<span th:text="${session.sessUser.username}">用户名</span> 
+							(<span th:text="${session.sessUser.currRoleName}"></span>)
+					</a>
+					<dl class="layui-nav-child layui-anim layui-anim-upbit" id="headerRoleList">
+					
+						<dd th:each="data : ${session.sessRoleList}">
+							<a class="roleItem" style="cursor: pointer;" th:value="${data.id}"><span th:text="${data.roleName}">角色名称</span></a>
+						</dd>
+						<!-- <dd>
+							<a href="">基本资料</a>
+						</dd>
+						<dd>
+							<a href="">安全设置</a>
+						</dd> -->
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+					<a th:href="@{/account/logout}" >退出</a>
+				</li>
+			</ul>
+		</div>
+		
+		<div th:fragment="layout_menu" class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+				<ul class="layui-nav layui-nav-tree" lay-filter="test">
+					<span sec:authorize="hasAuthority('APP_USER_MGR_QRY')">
+						<li class="layui-nav-item"><a th:href="@{/view/index.html}" >用户管理</a></li>
+					</span>
+					<span sec:authorize="hasAuthority('DEVICE_MGR_QRY')">
+						<li class="layui-nav-item"><a th:href="@{/view/goDeviceList}" >设备管理</a></li>
+					</span>
+					<span sec:authorize="hasAuthority('CONSUME_MGR_QRY')">
+						<li class="layui-nav-item"><a th:href="@{/view/goAppConsumerList}" >消费记录</a></li>
+					</span>
+					<span sec:authorize="hasAuthority('SOFT_PRICE_MGR_QRY')">
+						<li class="layui-nav-item"><a th:href="@{/view/goDiagPriceList}" >价格管理</a></li>
+					</span>
+					
+					<span sec:authorize="hasAnyAuthority('ZNHY_MGR_ALLOCATION_QRY','ZNHY_MGR_ACCOUNT_QRY','ZNHY_MGR_RULE_QRY')">
+					<li class="layui-nav-item"><a href="javascript:;">分账管理</a>
+						<dl class="layui-nav-child">
+							<dd class="dClass" sec:authorize="hasAuthority('ZNHY_MGR_ALLOCATION_QRY')">
+								<a th:href="@{/view/goZnhyAllocationList}" >资产分账管理</a>
+							</dd>
+							<dd class="dClass" sec:authorize="hasAuthority('ZNHY_MGR_ACCOUNT_QRY')">
+								<a th:href="@{/view/goZnhyAccountList}" >分账账户管理</a>
+							</dd>
+							<dd class="dClass" sec:authorize="hasAuthority('ZNHY_MGR_RULE_QRY')">
+								<a th:href="@{/view/goAllocationGroupList}" >分账规则管理</a>
+							</dd>
+						</dl>
+					</li>
+					</span>
+					
+					<span sec:authorize="hasAnyAuthority('SYS_MGR_USER_QRY','SYS_MGR_ROLE_QRY','SYS_MGR_AUTH_QRY')">
+					<li class="layui-nav-item"><a href="javascript:;">系统管理</a>
+						<dl class="layui-nav-child">
+							<dd class="dClass" sec:authorize="hasAuthority('SYS_MGR_USER_QRY')">
+								<a th:href="@{/view/goSysUserList}" >用户管理</a>
+							</dd>
+							<dd class="dClass" sec:authorize="hasAuthority('SYS_MGR_ROLE_QRY')">
+								<a th:href="@{/view/goSysRoleList}" >角色管理</a>
+							</dd>
+							<dd class="dClass" sec:authorize="hasAuthority('SYS_MGR_AUTH_QRY')">
+								<a th:href="@{/view/goSysAuthorList}" >权限管理</a>
+							</dd>
+						</dl>
+					</li>
+					</span>
+					
+				</ul>
+			</div>
+		</div>
+
+		<!-- <div class="layui-body" >
+			<div style="padding: 15px;height: 90%;" id="bodyContent">
+				<iframe id="option1" name="option"  style="overflow: visible;" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>
+            </div>
+		</div> -->
+
+		<div th:fragment="layout_footer" class="layui-footer" >
+			<!-- 底部固定区域 -->
+			<center>Copyright © 2018 深圳市元征软件开发有限公司 | <a href="//www.miitbeian.gov.cn/" target="_blank">粤ICP备06128098号</a></center>
+		</div>
+	</div>
+	
+<!-- <script type="text/javascript" th:src="@{/js/jquery-1.12.4.min.js}"></script> -->
+<!-- <script type="text/javascript" th:src="@{/layui/layui.all.js}"></script> -->
+
+	
+</body>
+</html>

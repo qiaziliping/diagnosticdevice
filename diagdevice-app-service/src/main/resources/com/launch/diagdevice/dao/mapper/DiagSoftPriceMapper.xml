@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.launch.diagdevice.dao.mapper.DiagSoftPriceMapper">
+
+	<resultMap id="baseResultMap" type="DiagSoftPrice">
+		<result property="id" column="id" />
+		<result property="softId" column="soft_id" />
+		<result property="currency" column="currency" />
+		<result property="buyType" column="buy_type" />
+		<result property="price" column="price" />
+		<result property="status" column="status" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+	
+
+	<sql id="baseNotIdColumns">
+		soft_id,currency,buy_type,price,status,create_user_id,create_time
+	</sql>
+	<sql id="baseColumns">
+		id,soft_id,currency,buy_type,price,status,create_user_id,create_time
+	</sql>
+
+
+	<sql id="whereClause">
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="id != null">
+				AND ${columnPrefix}id = #{id}
+			</if>
+			<if test="softId != null">
+				AND ${columnPrefix}soft_id = #{softId}
+			</if>
+			<if test="buyType != null">
+				AND ${columnPrefix}buy_type = #{buyType}
+			</if>
+			<if test="status != null">
+				AND ${columnPrefix}status = #{status}
+			</if>
+			<if test="currency != null">
+				AND ${columnPrefix}currency = #{currency}
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="updateColumns">
+		<set>
+			<if test="price != null">
+				price = #{price},
+			</if>
+			<if test="status != null">
+				status = #{status}
+			</if>
+		</set>
+	</sql>
+	
+	<select id="selectById" parameterType="Long" resultMap="baseResultMap">
+		SELECT <include refid="baseColumns" />
+		FROM diag_soft_price WHERE id = #{id}
+	</select>
+	
+	<select id="selectVoByRequest" parameterType="DiagSoftPriceRequest" resultType="DiagSoftPriceVo">
+		select  
+		    A.id AS id,
+		    A.soft_id AS softId,
+			A.currency AS currency,
+			A.price As price,
+			A.create_time AS createTime,
+			B.soft_name AS softName,
+			B.pdt_type_id AS pdtTypeId,
+			B.soft_applicable_area AS softApplicableArea
+		FROM diag_soft_price A LEFT JOIN diag_soft B
+		ON A.soft_id = B.soft_id
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="buyType != null">
+				AND A.buy_type = #{buyType}
+			</if>
+			<if test="softId != null">
+				AND A.soft_id = #{softId}
+			</if>
+			<if test="pdtTypeId != null">
+				AND B.pdt_type_id = #{pdtTypeId}
+			</if>
+			<if test="currency != null">
+				AND A.currency = #{currency}
+			</if>
+			<if test="softName != null and softName != ''">
+				AND TRIM(B.soft_name) LIKE CONCAT('%',TRIM(#{softName}),'%')
+			</if>
+			<if test="softApplicableArea != null and softApplicableArea != ''">
+				AND TRIM(B.soft_applicable_area) = TRIM(#{softApplicableArea})
+			</if>
+			<if test="status != null">
+				AND A.status = #{status}
+			</if>
+			AND B.is_active = 1
+		</trim>
+		ORDER BY ${sortBy} ${sortType} 
+		
+	</select>
+	
+	<select id="selectByCondition" parameterType="map" resultType="DiagSoftPriceVo">
+		SELECT 
+			A.id AS id,
+		    A.soft_id AS softId,
+			A.currency AS currency,
+			A.price As price,
+			A.buy_type AS buyType,
+			A.create_time AS createTime,
+			B.soft_name AS softName,
+			B.soft_applicable_area AS softApplicableArea
+		FROM diag_soft_price A ,diag_soft B
+		WHERE A.soft_id = B.soft_id
+		AND A.status = 0
+		<if test="currency != null">
+			AND A.currency = #{currency}
+		</if>
+		<if test="buyType != null">
+			AND A.buy_type = #{buyType}
+		</if>
+		<if test="list != null">
+			AND B.soft_id IN
+			<foreach collection="list" item="softId" open="(" separator=","
+				close=")">
+				#{softId}
+			</foreach>
+		</if>
+	</select>
+
+	<update id="update" statementType="PREPARED">
+		UPDATE diag_soft_price <include refid="updateColumns" /> 
+		WHERE id = #{id}
+	</update>
+
+	<insert id="save" parameterType="DiagSoftPrice">
+		INSERT INTO diag_soft_price (
+		<include refid="baseNotIdColumns" />
+		) VALUES 
+        (
+          #{softId}, 
+          #{currency}, 
+          #{buyType}, 
+          #{price},
+          #{status},
+          #{createUserId},
+          #{createTime}
+          )
+    	
+	</insert>
+
+</mapper>
+

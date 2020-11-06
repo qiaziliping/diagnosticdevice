@@ -1,0 +1,81 @@
+spring: 
+    application: 
+      name: business-service       
+    jackson: 
+      date-format: yyyy-MM-dd HH:mm:ss
+      serialization: 
+          WRAP_ROOT_VALUE: false
+          INDENT_OUTPUT: true
+    datasource: 
+        driverClassName: oracle.jdbc.OracleDriver
+        druid: 
+          url: jdbc:oracle:thin:@mycar.us.db:1521:mycar
+          username: mycar  
+          password: loicXZg/QLc08OdyGAmiPyFqbW0/MrNHMWYf/AzX1mzNZF/P2WFEesvVD0qQfQ/NJeAkSyvWnGD/f3FWgNBbhA==
+          publickey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAL3ZnQPuixhR+7NBh9ifYCo+4JOI2PmGya34bj4tkvs/mBIChdVawC9TI5xvoIwz/aLRqohTKSMUlZ4KWyfuIPUCAwEAAQ==
+          initialSize: 5
+          minIdle: 5
+          maxActive: 20
+          maxWait: 60000
+          timeBetweenEvictionRunsMillis: 60000
+          minEvictableIdleTimeMillis: 300000
+          validationQuery: SELECT 1 FROM DUAL
+          testWhileIdle: true
+          testOnBorrow: false
+          testOnReturn: false
+          poolPreparedStatements: true
+          maxPoolPreparedStatementPerConnectionSize: 20
+          filters: stat,wall,config
+          connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=${spring.datasource.druid.publickey}
+    cache: 
+      type: REDIS
+      redis: 
+        time-to-live: 3600000
+    redis: 
+      host: 172.17.31.42
+      port: 6379
+      password: Launch123
+      database: 0
+      #cluster: 
+        #nodes: 192.168.93.219:7000,192.168.93.219:7001,192.168.93.219:7002,192.168.93.219:7003,192.168.93.219:7004,192.168.93.219:7005
+        #max-redirects: 6
+      lettuce: 
+        pool: 
+          max-idle: 8
+          min-idle: 0
+          max-active: 8
+          max-wait: 1000ms
+        shutdown-timeout: 100ms
+      timeout: 3000
+pagehelper: 
+  helper-dialect: oracle
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+dubbo: 
+  application: 
+    id: system-provide
+    name: system-provide
+    qos-enable: true
+    qos-port: 22223
+  provider: 
+    timeout: 50000
+  registry: 
+    #address: zookeeper://127.0.0.1:2181
+    address: 172.17.31.21:2181,172.17.31.22:2182,172.17.31.42:2183
+    protocol: zookeeper
+    check: false
+  protocol: 
+    port: 20885
+    name: dubbo
+    id: dubbo
+    status: server
+  scan: 
+    basePackages: com.launch.diagdevice.system.service
+   
+logging: 
+  path: /usr/local/diaglog/logs
+  file: /usr/local/diaglog/logs/diagdevice-mycar-service.log
+  level: 
+    root: info
+    com: info

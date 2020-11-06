@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>list.html</title>
+</head>
+<body>
+  <h2>用户列表</h2>
+  <!-- <div>
+     <ul>
+         <li th:each="user:${users}">
+            ID:<span th:text="${user.id}"></span>|
+		             名字:<span th:text="${user.username}"></span>|
+		             年龄:<span th:text="${user.password}"></span>|
+		             地址:<span th:text="${user.mobile}"></span>|
+         </li>
+     </ul>
+   </div> -->
+   
+  <div style="width: 1000px;">
+  <table border="1" width="100%" cellpadding="0" cellspacing="1" bgcolor="#ACDDEC">
+    <tr>
+      <td >ID</td>
+      <td>姓名</td>
+      <td>密码</td>
+      <td>手机</td>
+    </tr>
+    <p th:each="user:${users}">
+	    <tr>
+	      <td th:text="${user.id}"></td>
+	      <td th:text="${user.username}"></td>
+	      <td th:text="${user.password}"></td>
+	      <td th:text="${user.mobile}"></td>
+	    </tr>
+    </p>
+
+  </table>
+  
+  <div id="page" url="/tl/userlist" ></div>
+  <div th:replace="page :: page"></div>
+  
+   <!-- <nav>
+            <ul class="pagination">
+                <li><a href="">&laquo;</a></li>
+
+                <li>
+                    <a th:if="${not isFirstPage}" th:href="@{${'/tl/list'}(pageNum=${pageNum-1},pageSize=${pageSize})}">上页</a>
+                    <a th:if="${isFirstPagee}" href="javascript:void(0);">上页</a>
+                </li>
+
+                <li th:each="pageNo : ${#numbers.sequence(1, totalPages)}">
+                    <a th:if="${pageNum eq pageNo}" href="javascript:void(0);">
+                         <span th:text="${pageNo}"></span>
+                    </a>
+
+                    <a th:if="${not (pageNum eq pageNo)}" th:href="@{${'/tl/list'}(pageNum=${pageNo},size=${pageSize})}">
+                        <span th:text="${pageNo}"></span>
+                    </a>
+                </li>
+                <li>
+                        <a th:if="${not isLastPage}" th:href="@{${'/tl/list'}(pageNum=${pageNum+1},size=${pageSize})}">Next</a>
+                        <a th:if="${isLastPage}" href="javascript:void(0);">下页</a>
+                    </li>
+
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </nav> -->
+
+<!--    <div th:include="page :: page"  url="/tl/userlist"></div> -->
+   </div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html >
+<html lang xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" th:href="@{/images/login/favicon.ico}" />
+	<title th:replace="~{layui/public/common :: layui_title}">规则详情</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+	<link rel="stylesheet" th:href="@{/css/public/common.css}" />      <!-- 公共CSS文件 -->
+	<link rel="stylesheet" th:href="@{/css/public/font-awesome.min.css}" />  <!-- 图标CSS文件 -->
+	<link rel="stylesheet" th:href="@{/css/profit_rule_add.css}" />
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+	<div th:replace="layui/public/common :: layout_header"></div>   
+	<div th:replace="layui/public/common :: layout_menu"></div>
+	
+	<form class="layui-form">
+	
+	<div class="layui-body" >
+		<div style="padding: 15px;height: 90%;">
+		<!--  ....公共部分.....  -->	
+		
+		    
+		            <div class="layui-fluid">
+		                <blockquote class="layui-elem-quote layui-text layui-clear" style="margin-top: 12px; margin-bottom: 12px;">
+		                  	  当前位置：
+		                    <span class="layui-breadcrumb">
+		                        <a href="javascript:;" id="returnRuleList">分账规则管理</a>
+		                        <a><cite>详情</cite></a>
+		                    </span>
+		                </blockquote>
+		            </div>
+		            <div class="layui-fluid" id="content">
+		                <div class="loading-text" style="top: 180px;">
+		                    <i class="icon-spinner icon-spin icon-large"></i> 加载中...
+		                </div>
+		            </div>
+		            
+		   
+
+<!--  ....公共部分.....  -->			
+        </div>
+	</div>
+	<div class="layui-footer " id="footer">
+         <div class="layui-fluid text-center">
+		    <a class="layui-btn layui-btn-primary" id="retTurnBtn">返回</a>
+		</div>
+     </div>
+     
+      </form>
+         
+</div>
+
+<script type="text/html" id="contentTemplate">
+    <div class="layui-form-item">
+        <label class="layui-form-label"><i class="icon-star not-empty"></i> 规则名称：</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" name="ruleName" value="{{d.groupName}}"
+                   placeholder="请输入规则名称" autocomplete="off" lay-verify="required" disabled="true"/>
+        </div>
+    </div>
+    <hr class="layui-bg-red" style="margin-bottom: 16px"/>
+    <div id="contentList">
+        {{# for (var i=0; i < d.ruleList.length; i++) { }}
+        <div class="layui-form-item" data-index="{{ i }}">
+            <label class="layui-form-label"><i class="icon-star not-empty"></i> 职位：</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" name="position[{{ i }}]" value="{{d.ruleList[i].job}}"
+                       lay-verify="required" autocomplete="off" placeholder="2到50位" disabled/>
+            </div>
+            <label class="layui-form-label" style="width: auto;"><i class="icon-star not-empty"></i> 账户名称：</label>
+            <div class="layui-input-inline">
+                <select name="nameSelect[{{ i }}]" id="nameSelect{{ i }}" lay-verify="required" disabled>
+                    <option value="">请选择</option>
+                    {{# for (var j=0; j < d.selectData.length; j++) { }}
+                        {{# if (d.ruleList[i].account.accountId === d.selectData[j].accountId) { }}
+                        <option value="{{d.selectData[j].accountId}}" selected>{{d.selectData[j].name}}</option>
+                        {{# } else { }}
+                        <option value="{{d.selectData[j].accountId}}">{{d.selectData[j].name}}</option>
+                        {{# } }}
+                    {{# } }}
+                </select>
+            </div>
+            <label class="layui-form-label" style="width: auto;"><i class="icon-star not-empty"></i> 比例：</label>
+            <div class="layui-input-inline" style="width: auto">
+                <input class="layui-input" name="proportion[{{ i }}]" value="{{d.ruleList[i].radios}}"
+                       style="width: 80px" lay-verify="required" autocomplete="off" placeholder="数字" disabled/>
+            </div>
+            <div class="layui-input-inline" style="width: auto">
+                <div class="layui-form-mid layui-word-aux">%</div>
+            </div>
+        </div>
+        {{# } }}
+    </div>
+</script>
+
+<script type="text/html" id="nameSelectTemplate">
+    <option value="">请选择</option>
+    {{# for (var i=0; i < d.length; i++) { }}
+    <option value="{{d[i].accountId}}">{{d[i].name}}</option>
+    {{# } }}
+</script>
+
+<script type="text/javascript">
+	var redirectVal = '[[${redirect}]]';
+	var jobGroupIdVal = [[${jobGroupId}]];
+</script>
+
+<!--存储数据的作用，类似后台的Redis <script src="library/store/store.legacy.min.js"></script> -->
+
+<script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/lodash/lodash.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<script type="text/javascript" th:src="@{/js/module/znhy_rule_detail.js}"></script>
+	
+<!-- <script src="js/profit/profit_rule_add.js"></script> -->
+</body>
+</html>

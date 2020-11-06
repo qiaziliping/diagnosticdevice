@@ -1,0 +1,211 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<link rel="shortcut icon" th:href="@{/images/login/favicon.ico}" />
+<title th:replace="~{layui/public/common :: layui_title}">消费记录</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/layui/css/layui.css}" />
+<link rel="stylesheet" th:href="@{/css/public/common.css}" />
+<link rel="stylesheet" th:href="@{/css/public/font-awesome.min.css}" />
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+	<div th:replace="layui/public/common :: layout_header"></div>   
+	<div th:replace="layui/public/common :: layout_menu"></div>   
+	<div class="layui-body" >
+		<div style="padding: 15px;height: 90%;">
+		<!--  ....公共部分.....  -->
+	<!-- 	搜索 -->
+	<form class="layui-form" action="">
+		<!-- 	<div class="layui-form"> -->
+		<div class="layui-form-item" style="margin-bottom: 0;">
+			<div class="layui-inline">
+				<input class="layui-input" name="orderNo" id="searchOrderNo"
+					placeholder="请输入消费编号" autocomplete="off" />
+			</div>
+			<div class="layui-inline">
+				<input class="layui-input" name="username" id="searchUserName"
+					placeholder="请输入用户名" autocomplete="off" />
+			</div>
+			<div class="layui-inline" style="position: relative">
+                <input class="layui-input" name="softName" id="softName" style="width: 280px;" placeholder="请输入诊断软件" autocomplete="off" />
+                <i class="icon-search" style="position: absolute; right: 0; top: 11px; right: 11px; color: #ccc"></i>
+            </div>
+			
+			<div class="layui-inline">
+				<a class="layui-btn layui-btn-danger " lay-submit
+					lay-filter="formDemo" id="searchBtn">搜索</a>
+			</div>
+		</div>
+		<!-- 	</div> -->
+	</form>
+
+	<table class="layui-hide" id="demo" lay-filter="test"></table>
+<!--  ....公共部分.....  -->			
+        </div>
+	</div>
+	<div th:replace="layui/public/common :: layout_footer"></div>   
+</div>
+<script type="text/javascript" th:src="@{/layui/layui.all.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.autocomplete.js}"></script>
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<script type="text/javascript">
+;(function() {
+	var consumerObj = function () {
+		this.softNameAutoComplete(); // 诊断软件自动完成
+	};
+	
+	consumerObj.prototype = {
+			
+		softNameAutoComplete: function () {
+			 $.ajax({
+	                url: '/diagSoft/getDiagSoftAll',
+	                type : 'GET',
+	                data:{},
+	          	  	dataType:'json',
+	                success: function (res) {
+	                    if (res.code === 0) {
+	                        var dataArr = [];
+	                        for (index in res.data) {
+	                            dataArr.push({
+	                                softId: res.data[index].softId,
+	                                softName: res.data[index].softName,
+	                                softApplicableArea: res.data[index].softApplicableArea,
+	                                value: res.data[index].softName + '(' + res.data[index].softApplicableArea + ')',
+	                            })
+	                        }
+	                        // autocomplete自动完成需要引用 jquery.autocomplete.js和jquery.autocompleter.css[封装在common.css中]
+	                        $('#softName').autocomplete({
+	                            lookup: dataArr,
+	                            onSelect: function (suggestion) {
+	                                $('#softName').val(suggestion.softName);
+	                            }
+	                        });
+	                    } else {
+	                    	layer.msg('诊断软件数据获取失败。(' + res.message + ')', {
+	                            icon: 5,
+	                            skin: 'layer-red'
+	                        });
+	                        //basic.alert('诊断软件数据获取失败。(' + res.message + ')')
+	                    }
+	                }
+	            });
+		}
+	};
+	
+	consumerObj.init = function () {
+		new this;
+	}
+	
+	
+	layui.use(['jquery'],function() {
+		window.$ = layui.$;
+		consumerObj.init();
+	});
+	
+})();
+</script>
+<script>
+
+		var qunju;
+		
+		layui.use(['table','form'], function() {
+			var table = layui.table;
+
+			//var tableRr = table.render({
+			qunju = table.render({
+				elem : '#demo',
+				url : '/loginUser/getConsumerRecordList/',
+				cellMinWidth : 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+				//页码的参数名称，默认：page
+				//每页数据量的参数名，默认：limit
+				request: {pageName: 'pageNum',limitName: 'pageSize'},
+				response: {msgName: 'message'}, //规定状态信息的字段名称，默认：msg
+				page : true, //开启分页
+				height: 'full-220',
+				cols : [ [ 
+					{field:'zizeng',title: '序号',templet: '#zizeng',type:'numbers'},
+					{field : 'orderId',width :60,title : '订单ID',hide:true}, 
+					{field : 'orderNo',title : '消费编号'},
+					{field : 'softName',title : '诊断软件',sort : true}, 
+					{field : 'username',title : '用户名'}, 
+					{field : 'createTime',title : '时间',width : '20%',minWidth : 50}, //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+				    {field : 'price',title : '消费金额(元)',width : '10%',sort : true}, 
+					{fixed : 'right',title : '操作',width : 165,align : 'center',toolbar : '#barDemo'}
+				] ]
+			});
+			
+			//行数据操作，监听行工具事件
+			table.on('tool(test)', function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+				var data = obj.data //获得当前行数据
+				, layEvent = obj.event; //获得 lay-event 对应的值
+				if (layEvent === 'detail') {
+					//detail(data.orderId);
+					window.location.href = "/view/goAppConsumerDetail?orderId=" + data.orderId + "&redirect="+encodeURIComponent(window.location.href);
+				} 
+				/* else if (layEvent === 'del') {
+					layer.confirm('真的删除行么', function(index) {
+						obj.del(); //删除对应行（tr）的DOM结构
+						layer.close(index);
+						//向服务端发送删除指令
+					});
+				} else if (layEvent === 'edit') {
+					layer.msg('编辑操作');
+				} */
+			});
+			
+		});
+		
+		// form表单提交，根据条件搜索
+		layui.use('form', function() {
+			var form = layui.form;
+			//监听提交
+			form.on('submit(formDemo)', function(data) {
+				
+				var usernamev = data.field.username;
+				var orderNov = data.field.orderNo;
+				var softNamev = data.field.softName;
+				// 重新渲染数据
+				qunju.reload({
+					where:{
+						username: usernamev,
+						orderNo: orderNov,
+						softName: softNamev
+					}
+				})
+				
+				return false;
+			});
+		}); 
+
+		//查看详情 
+		/* function detail(orderId) {
+			var index = layui.layer.open({
+	            title: "消费记录详情",
+	            type: 2,
+	            content: "/view/goAppConsumerDetail?orderId=" + orderId,
+	            success: function (layero, index) {
+	                setTimeout(function () {
+	                    layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+	                        tips: 3
+	                    });
+	                }, 500);
+	            }
+	        });
+	        layui.layer.full(index);
+	    } */
+</script>
+<script type="text/html" id="zizeng">
+    {{d.LAY_TABLE_INDEX+1}}
+</script>
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
+</script>
+</body>
+</html>
