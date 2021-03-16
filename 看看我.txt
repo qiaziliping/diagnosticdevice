@@ -31,4 +31,31 @@ diagdevice-web            // 后台管理系统 服务
 
 bc_diagdevice.sql 数据库
  
+ 
+测试环境部署dubbo服务········部署springboot项目···············
+语法说明
+ln -s 源文件 目标文件    --为某一个文件在另外一个位置建立一个同步的链接. 
+chmod +x   --的意思就是给执行权限
+             如果文件太多，可新建一个   xxx.sh文件，将需要授权的文件放在xxx.sh中,
+			 如： chmod +x diagdevice-app-client-0.0.1-SNAPSHOT.jar diagdevice-app-service-0.0.1-SNAPSHOT.jar
+			 再执行  ./xxx.sh
 
+
+步骤一
+ln -s /usr/local/diagdevice/diagdevice-app-client-0.0.1-SNAPSHOT.jar /etc/init.d/diagdevice-client
+chmod +x /usr/local/diagdevice/diagdevice-app-client-0.0.1-SNAPSHOT.jar 
+
+ln -s /usr/local/diagdevice/diagdevice-app-service-0.0.1-SNAPSHOT.jar /etc/init.d/diagdevice-service
+chmod +x /usr/local/diagdevice/diagdevice-app-service-0.0.1-SNAPSHOT.jar
+
+步骤二
+diagdevice-app-client-0.0.1-SNAPSHOT.jar   diagdevice-app-service-0.0.1-SNAPSHOT.jar
+
+步骤三
+cd /etc/init.d
+
+步骤四
+service diagdevice-app-service-0.0.1-SNAPSHOT.jar start
+service diagdevice-app-client-0.0.1-SNAPSHOT.jar start
+
+---------部署dubbo服务························
